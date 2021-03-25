@@ -4,9 +4,9 @@ PHISICAL FORMULATION
 
 In order to simulate the behavior of a fluid in a close basin we should start from the navier stokes equations:
 
-∂u∂t+u∂u∂x+v∂u∂y=−1ρ∂p∂x+ν(∂2u∂x2+∂2u∂y2)+Fx
-∂v∂t+u∂v∂x+v∂v∂y=−1ρ∂p∂y+ν(∂2v∂x2+∂2v∂y2)+Fy
-∂w∂t+u∂v∂x+v∂v∂y=−1ρ∂p∂y+ν(∂2v∂x2+∂2v∂y2)+Fz
+# ∂u∂t+u∂u∂x+v∂u∂y=−1ρ∂p∂x+ν(∂2u∂x2+∂2u∂y2)+Fx
+# ∂v∂t+u∂v∂x+v∂v∂y=−1ρ∂p∂y+ν(∂2v∂x2+∂2v∂y2)+Fy
+# ∂w∂t+u∂v∂x+v∂v∂y=−1ρ∂p∂y+ν(∂2v∂x2+∂2v∂y2)+Fz
 
 Fx, Fy, Fz in general are the resultant of any external force acting on our system:
 in our case we have the gravity force acting along the z-axis 
