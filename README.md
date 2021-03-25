@@ -61,7 +61,10 @@ For general purpose and definition of our algorithms, a Staggered CFD Grid shall
 
 DISCRETIZATION OF THE EQUATIONS
 
-"source": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
     "$$\\frac{\\partial u}{\\partial t}+u\\frac{\\partial u}{\\partial x}+v\\frac{\\partial u}{\\partial y}=-\\frac{1}{\\rho}\\frac{\\partial p}{\\partial x}+\\nu\\left(\\frac{\\partial^2 u}{\\partial x^2}+\\frac{\\partial^2 u}{\\partial y^2}\\right)+F$$\n",
     "\n",
     "$$\\frac{\\partial v}{\\partial t}+u\\frac{\\partial v}{\\partial x}+v\\frac{\\partial v}{\\partial y}=-\\frac{1}{\\rho}\\frac{\\partial p}{\\partial y}+\\nu\\left(\\frac{\\partial^2 v}{\\partial x^2}+\\frac{\\partial^2 v}{\\partial y^2}\\right)$$\n",
@@ -69,6 +72,7 @@ DISCRETIZATION OF THE EQUATIONS
     "$$\\frac{\\partial^2 p}{\\partial x^2}+\\frac{\\partial^2 p}{\\partial y^2}=-\\rho\\left(\\frac{\\partial u}{\\partial x}\\frac{\\partial u}{\\partial x}+2\\frac{\\partial u}{\\partial y}\\frac{\\partial v}{\\partial x}+\\frac{\\partial v}{\\partial y}\\frac{\\partial v}{\\partial y}\\right)\n",
     "$$"
    ]
+  },
 
 
 
