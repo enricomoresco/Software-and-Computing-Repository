@@ -77,7 +77,32 @@ Finally we can write our nu equation discretized
 
 nu
 
-The NS equation runs in the same staggering problem encountered in the discretization of the basin-level-equation but we should convert our nu derivative terms from the pressure grid to the velocity one
+The discretization of the NS equations runs in the same staggering problem encountered in the discretization of the basin-level-equation but we should convert our nu derivative terms from the pressure grid to the velocity one so we can write the derivatives:
+d_eta_dx
+d_eta_dy
+
+Furthermore we should find a way to discretize the advection term to let each cell communicate to all the adiacent and conservate locally the momentum.
+Notice that if we lazy discretize the derivative as done before
+
+udxu_1
+
+each cell communicate only with the following one and not with the previous one, so the most obvious solution is the centered finite difference
+
+udxu_2
+
+so we can write the N.S. equations as
+
+NSx
+NSy
+
+With the coriolis force 
+
+Fco
+
+And the wind stress, given the 3m wind field
+
+Fwind
+
 
 
 
