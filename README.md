@@ -45,15 +45,22 @@ with U,V integrals of the velocity over all the water column
 
 The system of differential equations now looks like this
 
-11 ∂u∂t+u∂u∂x+v∂u∂y=−1ρ∂p∂x+ν(∂2u∂x2+∂2u∂y2)+fv
-12 ∂v∂t+u∂v∂x+v∂v∂y=−1ρ∂p∂y+ν(∂2v∂x2+∂2v∂y2)-fu
-8 ∂p∂xi=-ρg∂n∂xi
-10 -(∂U∂x+∂V∂y)=∂n∂t
+![NS_u](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/11.gif)
+
+![NS_u](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/12.gif)
+
+![NS_u](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/8.gif)
+
+![NS_u](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/10.gif)
 
 As boundary condition for a closed basin seems reasonable a no-slip condition and a null pressure gradient
-13 u(boundary)=0
-14 v(boundary)=0
-15 ∂p∂xi(boundary)=0
+
+![u_boundary](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/13.gif)
+
+![v_boundary](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/14.gif)
+
+![∂p/∂xi(boundary)](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/15.gif)
+
 
 
 the system is closed and ,given an initial condition, we are ready to numerically solve it.
