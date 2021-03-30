@@ -80,12 +80,19 @@ So the velocity grid will have n-horizontal per m-vertical points and the pressu
 The Pressure equation can be easily discetized, calling i',j',k' the x,y,z indices in the pressure grid and i , j , k the x,y,z indices in the velocity grid 
 we can calculate U(i,j) and V(i,j) as
 
-U
-V
+![U_integral](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/U.gif)
+
+![V_integral](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/V.gif)
+
+
 
 Since U,V lie on a different grid than the p points, we shall calculate the discrete derivatives ΔU/Δx(i',j') , ΔV/Δy(i',j') by mediating on the direction ortogonal to the derivative itself.
-du_dx
-dv_dy
+
+![du_dx](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/dU_dx.gif)
+
+![dv_dy](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/dV_dy.gif)
+
+
 
 Finally we can write our nu equation discretized
 
