@@ -1,4 +1,4 @@
-# Quasi-3D stationary solutions of incompressible flow in a closed basin with idrostatic approx
+# Quasi-3D stationary solutions of an incompressible flow in a closed basin with idrostatic approximation
 ## _PHISICAL FORMULATION_
 
 In order to simulate the behavior of a fluid in a close basin we should start from the navier stokes equations:
