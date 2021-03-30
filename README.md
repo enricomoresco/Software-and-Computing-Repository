@@ -5,24 +5,29 @@ PHISICAL FORMULATION
 In order to simulate the behavior of a fluid in a close basin we should start from the navier stokes equations:
 
 ![NS_u](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/1.gif)
+
 ![NS_u](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/2.gif)
+
 ![NS_u](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/3.gif)
 
 
 Fx, Fy, Fz in general are the resultant of any external force acting on our system:
 in our case we have the gravity force acting along the z-axis 
+
 ![NS_u](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/4.gif)
 
 and the coriolis inertial force acting along x and y axes as result of earth rotation (the centrifugal force is neglectable)
 
 ![NS_u](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/5.gif)
+
 ![NS_u](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/6.gif)
 
 f is the coriolis parameter, is about 10E-4 rad/s mutiplied by the sine of the latitude.
 For a wide shallow basin we can simplify the third equation with the hidrostatic approximation:
+
 ![NS_u](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/7.gif)
 
-Considerin a uniform water density we can write the spatial derivatives of p, for example ∂p∂x as
+Considering a uniform water density we can write the spatial derivatives of p, for example ∂p∂x as
 
 ![NS_u](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/8.gif)
 
@@ -33,6 +38,7 @@ Then we consider incompressibility
 ![NS_u](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/9.gif)
 
 Integrating on all the water column we obtain
+
 ![NS_u](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/10.gif)
 
 with U,V integrals of the velocity over all the water column 
