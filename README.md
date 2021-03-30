@@ -128,8 +128,8 @@ And the wind stress, given the 3m wind field
 ![F_wind](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/F_wind.gif)
 
 
-In order to find the stationary solutions we will calculate the relative variations of velocity and pressure and we will sum the square values 
-then we will look for a solution with a small enough value of total relative variation in the last time step
+In order to find the stationary solutions we will calculate the relative variations of velocity and pressure each time step, then we will sum the square values 
+and we will look for a solution with a small enough value of total relative variation.
 
 ![TRV](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/TRV.gif)
 
