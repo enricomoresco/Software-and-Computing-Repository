@@ -64,7 +64,7 @@ As boundary condition for a closed basin seems reasonable a no-slip condition an
 
 the system is closed and ,given an initial condition, we are ready to numerically solve it.
 
-NUMERICAL FORMULATION
+## _NUMERICAL FORMULATION_
 
 DEFINITION OF THE GRID
 
