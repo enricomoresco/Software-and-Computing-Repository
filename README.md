@@ -62,7 +62,7 @@ As boundary condition for a closed basin seems reasonable a no-slip condition an
 
 
 
-the system is closed and ,given an initial condition, we are ready to numerically solve it.
+the system is closed and, given an initial condition, we are ready to numerically solve it.
 
 ## _NUMERICAL FORMULATION_
 
@@ -74,6 +74,7 @@ The only complication is the using of two grids, one for the velocity and one st
 For general purpose and definition of our algorithms, a Staggered CFD Grid shall be used. It ensures the presence of very real non-zero pressure gradient across the nodes in any condition, even in the case of a checkered grid. The staggering also ensures realistic behaviors of the descretized momentum equations for spatially oscillating pressures. Also, the direction of the velocity vectors are exact.
 
 So the velocity grid will have n-horizontal per m-vertical points and the pressure grid will have n+1 per m+1.
+Therefore the (i,j,k) cell of the velocity grid will be centered between the (i,j,k),(i+1,j,k),(i,j+1,k),(i+1,j+1,k) cells of the pressure grid.
 
 ### _Discretization of the equations_
 
