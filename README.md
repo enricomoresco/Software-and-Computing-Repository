@@ -96,38 +96,42 @@ Since U,V lie on a different grid than the p points, we shall calculate the disc
 
 Finally we can write our nu equation discretized
 
-nu
+![nu](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/nu.gif)
 
 The discretization of the NS equations runs in the same staggering problem encountered in the discretization of the basin-level-equation but we should convert our nu derivative terms from the pressure grid to the velocity one so we can write the derivatives:
-d_eta_dx
-d_eta_dy
+
+![d_eta_dx](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/d_eta_dx.gif)
+
+![d_eta_dy](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/d_eta_dy.gif)
 
 Furthermore we should find a way to discretize the advection term to let each cell communicate to all the adiacent and conservate locally the momentum.
 Notice that if we lazy discretize the derivative as done before
 
-udxu_1
+![udxu1](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/udxu1.gif)
 
 each cell communicate only with the following one and not with the previous one, so the most obvious solution is the centered finite difference
 
-udxu_2
+![udxu2](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/udxu2.gif)
 
 so we can write the N.S. equations as
 
-NSx
-NSy
+![NS_u](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/NS_u.gif)
+
+![NS_v](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/NS_v.gif)
 
 With the coriolis force 
 
-Fco
+![F_co](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/Fco.gif)
 
 And the wind stress, given the 3m wind field
 
-Fwind
+![F_wind](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/F_wind.gif)
+
 
 In order to find the stationary solutions we will calculate the relative variations of velocity and pressure and we will sum the square values 
 then we will look for a solution with a small enough value of total relative variation in the last time step
 
-TRV
+![TRV](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/TRV.gif)
 
 
 
