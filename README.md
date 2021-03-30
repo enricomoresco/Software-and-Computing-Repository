@@ -5,33 +5,35 @@ PHISICAL FORMULATION
 In order to simulate the behavior of a fluid in a close basin we should start from the navier stokes equations:
 
 ![NS_u](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/1.gif)
-2 ∂v∂t+u∂v∂x+v∂v∂y=−1ρ∂p∂y+ν(∂2v∂x2+∂2v∂y2)+Fy
-3 ∂w∂t+u∂v∂x+v∂v∂y=−1ρ∂p∂y+ν(∂2v∂x2+∂2v∂y2)+Fz
+![NS_u](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/2.gif)
+![NS_u](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/3.gif)
+
 
 Fx, Fy, Fz in general are the resultant of any external force acting on our system:
 in our case we have the gravity force acting along the z-axis 
-4 Fz=-ρg
+![NS_u](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/4.gif)
 
 and the coriolis inertial force acting along x and y axes as result of earth rotation (the centrifugal force is neglectable)
 
-5 Fx=fv
-6 Fy=-fu
+![NS_u](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/5.gif)
+![NS_u](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/6.gif)
 
 f is the coriolis parameter, is about 10E-4 rad/s mutiplied by the sine of the latitude.
 For a wide shallow basin we can simplify the third equation with the hidrostatic approximation:
-7 p=-ρgh
+![NS_u](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/7.gif)
 
 Considerin a uniform water density we can write the spatial derivatives of p, for example ∂p∂x as
-8 ∂p∂x=-ρg∂n∂x
+
+![NS_u](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/8.gif)
 
 with n the elevation of the surface of the basin
 
 Then we consider incompressibility
 
-9 ∂u∂x+∂v∂y+∂w∂z=0
+![NS_u](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/9.gif)
 
 Integrating on all the water column we obtain
-10 -(∂U∂x+∂V∂y)=∂n∂t
+![NS_u](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/10.gif)
 
 with U,V integrals of the velocity over all the water column 
 
