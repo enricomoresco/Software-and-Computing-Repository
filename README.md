@@ -75,7 +75,7 @@ For general purpose and definition of our algorithms, a Staggered CFD Grid shall
 
 So the velocity grid will have n-horizontal per m-vertical points and the pressure grid will have n+1 per m+1.
 
-DISCRETIZATION OF THE EQUATIONS
+### _Discretization of the equations_
 
 The Pressure equation can be easily discetized, calling i',j',k' the x,y,z indices in the pressure grid and i , j , k the x,y,z indices in the velocity grid 
 we can calculate U(i,j) and V(i,j) as
