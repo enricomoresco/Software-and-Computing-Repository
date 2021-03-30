@@ -4,7 +4,7 @@ PHISICAL FORMULATION
 
 In order to simulate the behavior of a fluid in a close basin we should start from the navier stokes equations:
 
-![NS_u](https://github.com/enricomoresco/Software-and-Computing-Repository/1.png)
+![NS_u](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/1.gif)
 2 ∂v∂t+u∂v∂x+v∂v∂y=−1ρ∂p∂y+ν(∂2v∂x2+∂2v∂y2)+Fy
 3 ∂w∂t+u∂v∂x+v∂v∂y=−1ρ∂p∂y+ν(∂2v∂x2+∂2v∂y2)+Fz
 
