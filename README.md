@@ -66,7 +66,7 @@ the system is closed and ,given an initial condition, we are ready to numericall
 
 ## _NUMERICAL FORMULATION_
 
-DEFINITION OF THE GRID
+### _ Definition of the grid_
 
 The grids used are the easiest possible: uniform 3-D  solidal with our x,y,z axes.
 The only complication is the using of two grids, one for the velocity and one staggered grid for the pressure, with each cell of the second one centered in the intesections of the cells of the first one.
