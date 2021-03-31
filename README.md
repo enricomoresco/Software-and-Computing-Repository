@@ -136,6 +136,8 @@ and we will look for a solution with a small enough value of total relative vari
 
 ![Trv_min](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/Trv_min.gif)
 
+## _How to run the code_
+
 
 
 
