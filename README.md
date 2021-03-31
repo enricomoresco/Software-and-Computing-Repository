@@ -136,7 +136,20 @@ and we will look for a solution with a small enough value of total relative vari
 
 ![Trv_min](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/Trv_min.gif)
 
-## _How to run the code_
+## _HOW TO RUN THE CODE_
+
+To run the code you have to provide five text files
+
+u_top.txt : n*m matrix with the values of the initial zonal velocity of the upper layer(m/s)
+
+u_bot.txt : n*m matrix with the values of the initial zonal velocity of the lower layer(m/s)
+
+v_top.txt : n*m matrix with the values of the initial meridional velocity of the upper layer(m/s)
+
+v_bot.txt : n*m matrix with the values of the initial meridional velocity of the lower layer(m/s)
+
+eta.txt   : n+1*m+1 matrix with the values of the initial basin height
+
 
 
 
