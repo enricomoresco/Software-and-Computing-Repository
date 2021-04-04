@@ -3,7 +3,7 @@
 
 In order to simulate the behavior of a fluid in a close basin we should start from the navier stokes equations:
 
-![NS_u](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/1.gif)
+![NS_u](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/Figures/1.gif)
 
 ![NS_u](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/2.gif)
 
