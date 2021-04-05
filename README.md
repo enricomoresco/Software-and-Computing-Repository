@@ -148,8 +148,7 @@ v_top.txt : n*m matrix with the values of the initial meridional velocity of the
 
 v_bot.txt : n*m matrix with the values of the initial meridional velocity of the lower layer(m/s)
 
-eta.txt   : n+1*m+1 matrix with the values of the initial basin height
-
+const.txt : contains all the phisical costants, the grid dimension and the number of cells in each direction in the velocity grid (to verify that data are correctly privided)
 
 
 
