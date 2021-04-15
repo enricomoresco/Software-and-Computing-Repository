@@ -1,4 +1,4 @@
-# Quasi-3D stationary solutions of an incompressible flow in a closed basin with idrostatic approximation
+# Quasi-3D stationary solutions of an incompressible flow in a closed basin with wind forcing
 ## _PHISICAL FORMULATION_
 
 In order to simulate the behavior of a fluid in a close basin we should start from the navier stokes equations:
@@ -138,7 +138,7 @@ and we will look for a solution with a small enough value of total relative vari
 
 ## _HOW TO RUN THE CODE_
 
-To run the code you have to provide five text files
+To run the code you have to provide seven text files
 
 u_top.txt : n*m matrix with the values of the initial zonal velocity of the upper layer(m/s)
 
@@ -148,7 +148,25 @@ v_top.txt : n*m matrix with the values of the initial meridional velocity of the
 
 v_bot.txt : n*m matrix with the values of the initial meridional velocity of the lower layer(m/s)
 
+u_wind.txt : n*m matrix with the values of the zonal wind velocity
+
+v_wind.txt : n*m matrix with the values of the meridional wind velocity
+
 const.txt : contains all the phisical costants, the grid dimension and the number of cells in each direction in the velocity grid (to verify that data are correctly privided)
+
+The user must provide phisically adequate values of variables:
+
+Current velocity must be below 1[m/s]
+
+Wind velocity must be below 30[m/s]
+
+Surface elevation must be below 2[m] and its mean value must be null
+
+The grid itself must be at least 3*3*2
+
+To verify the correctnes of the provided data the user should launch input_test.ipy.
+
+
 
 
 
