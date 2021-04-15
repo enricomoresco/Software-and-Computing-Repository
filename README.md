@@ -144,21 +144,21 @@ and we will look for a solution with a small enough value of total relative vari
 
 To run the code you have to provide seven text files, in the folder [initial_conditions](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/initial_conditions):
 
-* [u_top.txt](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/initial_conditions/u_top.txt) : n*m matrix with the values of the initial zonal velocity of the upper layer(m/s)
+* [u_top.txt](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/initial_conditions/u_top.txt) : n*m matrix with the values of the initial **zonal velocity of the upper layer**(m/s)
 
-* [u_bot.txt](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/initial_conditions/u_bot.txt) : n*m matrix with the values of the initial zonal velocity of the lower layer(m/s)
+* [u_bot.txt](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/initial_conditions/u_bot.txt) : n*m matrix with the values of the initial **zonal velocity of the lower layer**(m/s)
  
-* [v_top.txt](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/initial_conditions/v_top.txt) : n*m matrix with the values of the initial meridional velocity of the upper layer(m/s)
+* [v_top.txt](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/initial_conditions/v_top.txt) : n*m matrix with the values of the initial **meridional velocity of the upper layer**(m/s)
 
-* [v_bot.txt](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/initial_conditions/v_bot.txt) : n*m matrix with the values of the initial meridional velocity of the lower layer(m/s)
+* [v_bot.txt](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/initial_conditions/v_bot.txt) : n*m matrix with the values of the initial **meridional velocity of the lower layer**(m/s)
 
-* [u_wind.txt](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/initial_conditions/u_wind.txt) : n*m matrix with the values of the zonal wind velocity
+* [u_wind.txt](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/initial_conditions/u_wind.txt) : n*m matrix with the values of the **zonal wind velocity**
 
-* [v_wind.txt](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/initial_conditions/v_wind.txt) : n*m matrix with the values of the meridional wind velocity
+* [v_wind.txt](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/initial_conditions/v_wind.txt) : n*m matrix with the values of the **meridional wind velocity**
 
-* [const.txt](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/initial_conditions/const.txt) : contains all the phisical costants, the grid dimension and the number of cells in each direction in the velocity grid (to verify that data are correctly privided)
+* [const.txt](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/initial_conditions/const.txt) : contains all the **physical costants**, the grid dimension and the number of cells in each direction in the velocity grid (to verify that data are correctly privided)
 
-The user must provide phisically adequate values of variables:
+The user must provide physically adequate values of variables:
 
 * **Current velocity** must be below 1[m/s]
 
