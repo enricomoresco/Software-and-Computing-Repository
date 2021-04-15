@@ -138,7 +138,15 @@ and we will look for a solution with a small enough value of total relative vari
 
 ## _STRUCTURE OF THE CODE_
 
+The project is divided in different files
 
+* [initial_condition]((https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/initial_condition) contains all the input files
+* [output_figures](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/output_figures) contains all the output figures
+* [cfd.py](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/cfd.py) is the core of the code and it's the file to be launched
+* [functions](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/functions) contains all the functions previously discussed and other simple tools
+* [functions_test](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/functions_test) is a tool to verify the correct behavior of the functions
+* [input_test](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/input_test) is a tool to verify the correctness of the input files
+* [test_functions](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/test_functions) contains all the different tests used in [input_test](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/input_test) and [functions_test](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/functions_test)
 
 ## _HOW TO RUN THE CODE_
 
