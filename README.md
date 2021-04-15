@@ -138,7 +138,7 @@ and we will look for a solution with a small enough value of total relative vari
 
 ## _HOW TO RUN THE CODE_
 
-To run the code you have to provide seven text files, in the folder initial_conditions:
+To run the code you have to provide seven text files, in the folder [initial_conditions](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/initial_conditions):
 
 u_top.txt : n*m matrix with the values of the initial zonal velocity of the upper layer(m/s)
 
