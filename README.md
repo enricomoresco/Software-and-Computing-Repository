@@ -30,7 +30,7 @@ Considering a uniform water density we can write the spatial derivatives of p, f
 
 ![NS_u](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/Figures/8.gif)
 
-with n the elevation of the surface of the basin
+with eta the elevation of the surface of the basin
 
 Then we consider incompressibility
 
@@ -95,11 +95,11 @@ Since U,V lie on a different grid than the p points, we shall calculate the disc
 
 
 
-Finally we can write our nu equation discretized
+Finally we can write our eta equation discretized
 
 ![nu](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/Figures/nu.gif)
 
-The discretization of the NS equations runs in the same staggering problem encountered in the discretization of the basin-level-equation but we should convert our nu derivative terms from the pressure grid to the velocity one so we can write the derivatives:
+The discretization of the NS equations runs in the same staggering problem encountered in the discretization of the basin-level-equation but we should convert our eta derivative terms from the pressure grid to the velocity one so we can write the derivatives:
 
 ![d_eta_dx](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/Figures/d_eta_dx.gif)
 
