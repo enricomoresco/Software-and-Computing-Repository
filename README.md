@@ -140,7 +140,7 @@ and we will look for a solution with a small enough value of total relative vari
 
 The project is divided in different files
 
-* [initial_condition]((https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/initial_condition) contains all the input files
+* [initial_condition](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/initial_condition) contains all the input files
 * [output_figures](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/output_figures) contains all the output figures
 * [cfd.py](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/cfd.py) is the core of the code and it's the file to be launched
 * [functions](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/functions) contains all the functions previously discussed and other simple tools
@@ -151,17 +151,11 @@ The project is divided in different files
 ## _HOW TO RUN THE CODE_
 
 To run the code you have to provide seven text files, in the folder [initial_conditions](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/initial_conditions):
-
 * [u_top.txt](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/initial_conditions/u_top.txt) : n*m matrix with the values of the initial **zonal velocity of the upper layer**[m/s]
-
 * [u_bot.txt](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/initial_conditions/u_bot.txt) : n*m matrix with the values of the initial **zonal velocity of the lower layer**[m/s]
- 
-* [v_top.txt](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/initial_conditions/v_top.txt) : n*m matrix with the values of the initial **meridional velocity of the upper layer**[m/s]
-
+ * [v_top.txt](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/initial_conditions/v_top.txt) : n*m matrix with the values of the initial **meridional velocity of the upper layer**[m/s]
 * [v_bot.txt](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/initial_conditions/v_bot.txt) : n*m matrix with the values of the initial **meridional velocity of the lower layer**[m/s]
-
 * [u_wind.txt](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/initial_conditions/u_wind.txt) : n*m matrix with the values of the **zonal wind velocity**[m/s]
-
 * [v_wind.txt](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/initial_conditions/v_wind.txt) : n*m matrix with the values of the **meridional wind velocity**[m/s]
 
 * [const.txt](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/initial_conditions/const.txt) : contains all the **physical costants**, the grid dimension and the number of cells in each direction in the velocity grid (to verify that data are correctly privided)
@@ -169,11 +163,8 @@ To run the code you have to provide seven text files, in the folder [initial_con
 The user must provide physically adequate values of variables:
 
 * **Current velocity** must be below 1[m/s]
-
 * **Wind velocity** must be below 30[m/s]
-
 * **Surface elevation** must be below 2[m] and its mean value must be null
-
 * **The grid** itself must be at least 3*3*2
 
 To verify the correctnes of the provided data the user should compile [input_test.py](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/input_test.py).
