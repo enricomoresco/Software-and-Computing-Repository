@@ -10,6 +10,8 @@ nx = parser.getint('numerical_variables', 'nx',
                          fallback = -1) 
 ny = parser.getint('numerical_variables', 'ny',
                          fallback = -1) 
+
+nz = 2
 x = parser.getfloat('physical_variables', 'x',
                          fallback = -1) 
 y = parser.getfloat('physical_variables', 'y',
@@ -70,8 +72,8 @@ v[0,:,:] = data_v_bot[:,:]
 
 #create grid
 
-dt = 0.99
-nz = 2
+
+
 dx = x / (nx - 1)
 dy = y / (ny - 1)
 dz = z / (nz - 1)
@@ -85,4 +87,4 @@ yp = numpy.linspace(0, y, ny+1)
 zp = numpy.linspace(0, z, nz)
 Xp, Yp = numpy.meshgrid(xp, yp)
 
-test.imput(nx,ny,H,nx_u_top,nx_v_top,nx_u_bot,nx_v_bot,nx_eta,ny_u_top,ny_v_top,ny_u_bot,ny_v_bot,ny_eta,uw,vw,u,v,z)
+test.input(nx,ny,H,nx_u_top,nx_v_top,nx_u_bot,nx_v_bot,nx_eta,ny_u_top,ny_v_top,ny_u_bot,ny_v_bot,ny_eta,uw,vw,u,v,z)

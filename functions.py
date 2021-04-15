@@ -101,7 +101,43 @@ def Dey2b(f, nx, ny, dy):
     f_2[:,1:-1] = (f[:,2:]+f[:,0:-2]-(2*f[:,1:-1]))/dy**2
     return f_2
 
-def H_time_step(H,u,v,nx,ny):
+def udexu(u,nx,ny,nz,dx):
+    un = u.copy()
+    
+    
+    Dexun = Dex(un,nx,ny,nz,dx)
+    
+    udxu = numpy.zeros(((nz,nx,ny)))
+    udxu[:,1:-1,1:-1] = un[:,1:-1,1:-1]*(Dexun[:,:-2,1:-1]+Dexun[:,1:-1,1:-1])/2
+    
+    return udxu
+
+
+def udexv(u,v,nx,ny,nz,dx):
+    un = u.copy()
+    vn = v.copy()
+    Dexvn = Dex(vn,nx,ny,nz,dx)
+    udxv = numpy.zeros(((nz,nx,ny)))
+    udxv[:,1:-1,1:-1] = un[:,1:-1,1:-1]*(Dexvn[:,:-2,1:-1]+Dexvn[:,1:-1,1:-1])/2
+    return udxv
+
+def vdeyu(u,v,nx,ny,nz,dy):
+    un = u.copy()
+    vn = v.copy()
+    Deyun = Dey(un,nx,ny,nz,dx)    
+    vdyu = numpy.zeros(((nz,nx,ny)))
+    vdyu[:,1:-1,1:-1] = vn[:,1:-1,1:-1]*(Deyun[:,1:-1,:-2]+Deyun[:,1:-1,1:-1])/2
+    return vdyu
+
+def vdeyv(v,nx,ny,nz,dy):
+    vdyv = numpy.zeros(((nz,nx,ny)))
+    vn = v.copy()
+    Deyvn = Dey(vn,nx,ny,nz,dy)
+    vdyv[:,1:-1,1:-1] = vn[:,1:-1,1:-1]*(Deyvn[:,1:-1,:-2]+Deyvn[:,1:-1,1:-1])/2
+    return vdyv
+    
+
+def H_time_step(H,u,v,nx,ny,dt):
     Hn = H.copy()
     U= numpy.zeros((nx+1,ny+1))
     V= numpy.zeros((nx+1,ny+1))
@@ -110,7 +146,7 @@ def H_time_step(H,u,v,nx,ny):
    
     DexbU = Dexb(U,nx,ny,dx)
     DeybV = Deyb(V,nx,ny,dy)
-    H[1:-1,1:-1]=Hn[1:-1,1:-1]-(DexbU[1:-1,1:-1]+DexbU[1:-1,2:])/2-(DeybV[1:-1,1:-1]+DeybV[2:,1:-1])/2
+    H[1:-1,1:-1]=Hn[1:-1,1:-1]-dt*((DexbU[1:-1,1:-1]+DexbU[1:-1,2:])/2+(DeybV[1:-1,1:-1]+DeybV[2:,1:-1])/2)
     #BC gradiente di pressione nullo al bordo lungo la perpendicolare
     H[:,0] = H[:,1]
     H[:,ny]=H[:,ny-1]
@@ -122,16 +158,12 @@ def H_time_step(H,u,v,nx,ny):
 
 def vel_time_step(u,v,H,Fx,Fy,dt, nx, ny):
     Hn = H.copy()
-    H = H_time_step(H,u,v,nx,ny)
+    H = H_time_step(H,u,v,nx,ny,dt)
     
     Bx,By = bottom_stress(u, v, nx, ny, nz)
     
     cox = numpy.zeros(((nz,nx,ny)))
     coy = numpy.zeros(((nz,nx,ny)))
-    udxu = numpy.zeros(((nz,nx,ny)))
-    udxv = numpy.zeros(((nz,nx,ny)))
-    vdyu = numpy.zeros(((nz,nx,ny)))
-    vdyv = numpy.zeros(((nz,nx,ny)))
     dexP = numpy.zeros((nx,ny))
     deyP = numpy.zeros((nx,ny))
 
@@ -142,10 +174,7 @@ def vel_time_step(u,v,H,Fx,Fy,dt, nx, ny):
     
     un = u.copy()
     vn = v.copy()
-    Dexun = Dex(un,nx,ny,nz,dx)
-    Dexvn = Dex(vn,nx,ny,nz,dx)
-    Deyun = Dey(un,nx,ny,nz,dy)
-    Deyvn = Dey(vn,nx,ny,nz,dy)
+
     Dez2un[0,:,:]=-(un[0,:,:]-un[1,:,:])/(dz**2)
     Dez2un[1,:,:]=-Dez2un[0,:,:]
     Dez2vn[0,:,:]=-(vn[0,:,:]-vn[1,:,:])/(dz**2)
@@ -154,10 +183,10 @@ def vel_time_step(u,v,H,Fx,Fy,dt, nx, ny):
     
     cox[:,:,:] = fco*vn[:,:,:]
     coy[:,:,:] = -fco*un[:,:,:]
-    udxu[:,1:-1,1:-1] = un[:,1:-1,1:-1]*(Dexun[:,0:-2,1:-1]+Dexun[:,1:-1,1:-1])/2
-    udxv[:,1:-1,1:-1] = un[:,1:-1,1:-1]*(Dexvn[:,0:-2,1:-1]+Dexvn[:,1:-1,1:-1])/2
-    vdyu[:,1:-1,1:-1] = vn[:,1:-1,1:-1]*(Deyun[:,1:-1,0:-2]+Deyun[:,1:-1,1:-1])/2
-    vdyv[:,1:-1,1:-1] = vn[:,1:-1,1:-1]*(Deyvn[:,1:-1,0:-2]+Deyvn[:,1:-1,1:-1])/2
+    udxu = udexu(u, nx, ny, nz, dx)
+    udxv = udexv(u,v, nx, ny, nz, dx)
+    vdyu = vdeyu(u,v, nx, ny, nz, dy)
+    vdyv = vdeyv(v, nx, ny, nz, dy)
     dexP[:,:] = g/2 * (Dexb(H,nx,ny,dx)[:-1,:-1]+Dexb(H,nx,ny,dx)[:-1,1:])
     deyP[:,:] = g/2 * (Deyb(H,nx,ny,dy)[:-1,:-1]+Deyb(H,nx,ny,dy)[1:,:-1])
     disuh = nu * (Dex2(un,nx,ny,nz,dx) + Dey2(un,nx,ny,nz,dy))
@@ -167,15 +196,7 @@ def vel_time_step(u,v,H,Fx,Fy,dt, nx, ny):
     
     u[:,1:-1,1:-1] = (un[:,1:-1,1:-1] - dexP[1:-1,1:-1]-udxu[:,1:-1,1:-1]-vdyu[:,1:-1,1:-1]+disu[:,1:-1,1:-1]+cox[:,1:-1,1:-1]+Fx[:,1:-1,1:-1]+Bx[:,1:-1,1:-1])*dt
     v[:,1:-1,1:-1] = (vn[:,1:-1,1:-1] - deyP[1:-1,1:-1]-udxv[:,1:-1,1:-1]-vdyv[:,1:-1,1:-1]+disv[:,1:-1,1:-1]+coy[:,1:-1,1:-1]+Fy[:,1:-1,1:-1]+By[:,1:-1,1:-1])*dt
-    u[:,0,:] = 0
-    u[:,-1,:] = 0
-    v[:,0,:] = 0
-    v[:,-1,:] = 0
-    u[:,:,0] = 0
-    u[:,:,-1] = 0
-    v[:,:,0] = 0
-    v[:,:,-1] = 0
-    
+
     du2 = (u-un)**2
     dv2 = (v-vn)**2
     dH2 = (H-Hn)**2
@@ -184,9 +205,9 @@ def vel_time_step(u,v,H,Fx,Fy,dt, nx, ny):
     v2 = v**2
     H2 = H**2
 
-    udiff = numpy.sum(du2)/(numpy.sum(u2)+.0000000001)
-    vdiff = numpy.sum(dv2)/(numpy.sum(v2)+.0000000001)
-    Hdiff = numpy.sum(dH2)/(numpy.sum(H2)+.0000000001)
+    udiff = numpy.sum(du2)/(numpy.sum(u2)+.00000000000000000000000000000000001)
+    vdiff = numpy.sum(dv2)/(numpy.sum(v2)+.00000000000000000000000000000000001)
+    Hdiff = numpy.sum(dH2)/(numpy.sum(H2)+.00000000000000000000000000000000001)
     
     return u,v,H,udiff,vdiff,Hdiff
 
