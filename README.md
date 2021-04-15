@@ -165,7 +165,7 @@ The user must provide physically adequate values of variables:
 * **Current velocity** must be below 1[m/s]
 * **Wind velocity** must be below 30[m/s]
 * **Surface elevation** must be below 2[m] and its mean value must be null
-* **The grid** itself must be at least 3*3*2
+* **The grid** itself must count at least three points per dimension
 
 To verify the correctnes of the provided data the user should compile [input_test.py](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/input_test.py).
 
