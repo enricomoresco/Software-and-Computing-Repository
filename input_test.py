@@ -87,4 +87,4 @@ yp = numpy.linspace(0, y, ny+1)
 zp = numpy.linspace(0, z, nz)
 Xp, Yp = numpy.meshgrid(xp, yp)
 
-test.input(nx,ny,H,nx_u_top,nx_v_top,nx_u_bot,nx_v_bot,nx_eta,ny_u_top,ny_v_top,ny_u_bot,ny_v_bot,ny_eta,uw,vw,u,v,z)
+test.input(nx,ny,H,nx_u_top,nx_v_top,nx_u_bot,nx_v_bot,nx_eta,ny_u_top,ny_v_top,ny_u_bot,ny_v_bot,ny_eta,uw,vw,u,v,x,y,z,fco,g,nu)
