@@ -140,7 +140,17 @@ def test_eta_y_boundaries(nx,H):
         assert a  == 0, "please provide null elevation gradient values at the boundary y=0"
         assert b  == 0, "please provide null elevation gradient values at the boundary y=L"      
  
-def input(nx,ny,H,nx_u_top,nx_v_top,nx_u_bot,nx_v_bot,nx_eta,ny_u_top,ny_v_top,ny_u_bot,ny_v_bot,ny_eta,uw,vw,u,v,z)  :
+
+def test_ph_parameters(x,y,z,fco,g,nu):
+    afco = abs(fco)
+    assert x > 0, "please provide positive dimensional values for the basin"
+    assert y > 0, "please provide positive dimensional values for the basin"
+    assert z > 0, "please provide positive dimensional values for the basin"
+    assert 0.001 > afco, "please provide a physically plausible value for coriolis parameter (around ±0.0001 values)"
+    assert g > 0, "gravitational acceleration [g] must be positive! (positive values are associated to downward vectors)"
+    assert nu > 0, "viscosity [nu] must be positive!"
+
+def input(nx,ny,H,nx_u_top,nx_v_top,nx_u_bot,nx_v_bot,nx_eta,ny_u_top,ny_v_top,ny_u_bot,ny_v_bot,ny_eta,uw,vw,u,v,x,y,z,fco,g,nu)  :
     test_eta_y_boundaries(nx,H)
     test_eta_x_boundaries(ny,H)
     test_vel_y_boundaries(nx,u,v)
@@ -150,6 +160,7 @@ def input(nx,ny,H,nx_u_top,nx_v_top,nx_u_bot,nx_v_bot,nx_eta,ny_u_top,ny_v_top,n
     test_eta_H    
     test_input_values(nx,ny,u,v,uw,vw)
     test_grid(nx,ny,nx_u_top,nx_v_top,nx_u_bot,nx_v_bot,nx_eta,ny_u_top,ny_v_top,ny_u_bot,ny_v_bot,ny_eta)
+    test_ph_parameters(x,y,z,fco,g,nu)
     print("input values verified")  
     
           
@@ -337,7 +348,7 @@ def verify_BC_evolution(iterations,step=0):
     
     print("BC evolution verified")
 
-                
+    
                 
         
 
