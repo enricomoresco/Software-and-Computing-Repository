@@ -1,7 +1,7 @@
 import numpy
 from configparser import ConfigParser
 
-# Choice of physical an numerical constants 
+# Choice of physical and numerical constants 
 parser = ConfigParser()
 parser.read('const.txt')
 
@@ -26,7 +26,7 @@ dx = x / (nx - 1)
 dy = y / (ny - 1)
 dz = z / (nz - 1)
 
-#calcola stress del fondale
+#calculate bottom stress
 
 def bottom_stress(u, v, nx, ny, nz):
     Bx = numpy.zeros(((nz,nx,ny)))
@@ -36,7 +36,7 @@ def bottom_stress(u, v, nx, ny, nz):
     By[0,:,:]= -k*v[0,:,:]*numpy.sqrt((u[0,:,:]**2)+(v[0,:,:]**2))
     return Bx, By
 
-#calcola stress ventoso
+#calculate wind stress
 
 def wind_stress(uw, vw, nx, ny, nz):
     Fx = numpy.zeros(((nz,nx,ny)))
@@ -46,60 +46,61 @@ def wind_stress(uw, vw, nx, ny, nz):
     Fy[1,:,:]= k*vw[:,:]*numpy.sqrt((uw[:,:]**2)+(vw[:,:]**2))
     return Fx, Fy
 
-#derivata in x funzione in due variabili
+#x-derivative of 2-variables function
 
 def Dexb(f, nx, ny, dx):
     f_1= numpy.zeros((nx+1,ny+1))
     f_1[:-1,:]=(f[1:,:]-f[:-1,:])/dx
     return f_1
 
-#derivata in y funzione in due variabili
+#y-derivative of 2-variables function
 
 def Deyb(f, nx, ny, dy):
     f_1 =  numpy.zeros((nx+1,ny+1))
     f_1[:,:-1] = (f[:,1:]-f[:,:-1])/dy
     return f_1
 
-#derivata in x funzione in tre variabili
+#x-derivative of 3-variables function
 
 def Dex(f, nx, ny, nz, dx):
     f_1 = numpy.zeros(((nz,nx,ny)))
     f_1[:,:-1,:] = (f[:,1:,:]-f[:,:-1,:])/dx
     return f_1
 
-#derivata in y funzione in tre variabili
+#y-derivative of 3-variables function
 
 def Dey(f, nx, ny, nz, dy):
     f_1 = numpy.zeros(((nz,nx,ny)))
     f_1[:,:,:-1] = (f[:,:,1:]-f[:,:,:-1])/dy
     return f_1
 
-#derivata seconda in x funzione in tre variabili
-
+#second x-derivative of 3-variables function
 def Dex2(f, nx, ny, nz, dx):
     f_2 = numpy.zeros(((nz,nx,ny)))
     f_2[:,1:-1,:] = (f[:,2:nx,:]+f[:,0:nx-2,:]-(2*f[:,1:-1,:]))/dx**2
     return f_2
 
-#derivata seconda in y funzione in tre variabili
+#second y-derivative of 3-variables function
 
 def Dey2(f, nx, ny, nz, dy):
     f_2 = numpy.zeros(((nz,nx,ny)))
     f_2[:,:,1:-1] = (f[:,:,2:ny]+f[:,:,0:ny-2]-(2*f[:,:,1:-1]))/dy**2
     return f_2
 
-#derivata seconda in x funzione in tre variabili
+#second x-derivative of 2-variables function
 def Dex2b(f):
     f_2 = numpy.zeros((nx+1,ny+1))
     f_2[1:-1,:] = (f[2:,:]+f[0:-2,:]-(2*f[1:-1,:]))/dx**2
     return f_2
 
-#derivata seconda in y funzione in tre variabili
+#second y-derivative of 2-variables function
 
 def Dey2b(f, nx, ny, dy):
     f_2 = numpy.zeros((nx+1,ny+1))
     f_2[:,1:-1] = (f[:,2:]+f[:,0:-2]-(2*f[:,1:-1]))/dy**2
     return f_2
+
+#Advection terms
 
 def udexu(u,nx,ny,nz,dx):
     un = u.copy()
@@ -135,7 +136,8 @@ def vdeyv(v,nx,ny,nz,dy):
     Deyvn = Dey(vn,nx,ny,nz,dy)
     vdyv[:,1:-1,1:-1] = vn[:,1:-1,1:-1]*(Deyvn[:,1:-1,:-2]+Deyvn[:,1:-1,1:-1])/2
     return vdyv
-    
+   
+#Define how the elevation evolves through time 
 
 def H_time_step(H,u,v,nx,ny,dt):
     Hn = H.copy()
@@ -155,8 +157,9 @@ def H_time_step(H,u,v,nx,ny,dt):
 
     return H
 
+#Define how the velocity evolves through time 
 
-def vel_time_step(u,v,H,Fx,Fy,dt, nx, ny):
+def vel_time_step(u,v,H,Fx,Fy,dt, nx, ny , g):
     Hn = H.copy()
     H = H_time_step(H,u,v,nx,ny,dt)
     
@@ -197,18 +200,18 @@ def vel_time_step(u,v,H,Fx,Fy,dt, nx, ny):
     u[:,1:-1,1:-1] = (un[:,1:-1,1:-1] - dexP[1:-1,1:-1]-udxu[:,1:-1,1:-1]-vdyu[:,1:-1,1:-1]+disu[:,1:-1,1:-1]+cox[:,1:-1,1:-1]+Fx[:,1:-1,1:-1]+Bx[:,1:-1,1:-1])*dt
     v[:,1:-1,1:-1] = (vn[:,1:-1,1:-1] - deyP[1:-1,1:-1]-udxv[:,1:-1,1:-1]-vdyv[:,1:-1,1:-1]+disv[:,1:-1,1:-1]+coy[:,1:-1,1:-1]+Fy[:,1:-1,1:-1]+By[:,1:-1,1:-1])*dt
 
-    du2 = (u-un)**2
-    dv2 = (v-vn)**2
+    du4 = (u-un)**4
+    dv4 = (v-vn)**4
     dH2 = (H-Hn)**2
    
-    u2 = u**2
-    v2 = v**2
+    u4 = u**4
+    v4 = v**4
     H2 = H**2
+    g2 = g**2
 
-    udiff = numpy.sum(du2)/(numpy.sum(u2)+.00000000000000000000000000000000001)
-    vdiff = numpy.sum(dv2)/(numpy.sum(v2)+.00000000000000000000000000000000001)
-    Hdiff = numpy.sum(dH2)/(numpy.sum(H2)+.00000000000000000000000000000000001)
+    udiff = numpy.sum(du4)/(numpy.sum(u4)+numpy.sum(v4)+g2*numpy.sum(H2))
+    vdiff = numpy.sum(dv4)/(numpy.sum(u4)+numpy.sum(v4)+g2*numpy.sum(H2))
+    Hdiff = numpy.sum(dH2)/(numpy.sum(H2)+numpy.sum(u4)/g2+numpy.sum(v4)/100)
     
     return u,v,H,udiff,vdiff,Hdiff
-
 
