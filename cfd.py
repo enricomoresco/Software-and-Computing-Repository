@@ -94,7 +94,7 @@ Xp, Yp = numpy.meshgrid(xp, yp)
 Fx,Fy = fn.wind_stress(uw, vw, nx, ny, nz)
 
 #find stationary solution
-u, v, H, udiff0, vdiff0, Hdiff0  = fn.vel_time_step(u, v, H, Fx, Fy, dt, nx, ny)
+u, v, H, udiff0, vdiff0, Hdiff0  = fn.vel_time_step(u, v, H, Fx, Fy, dt, nx, ny,g)
 
 diff0 = udiff0 + vdiff0 + Hdiff0
 a = diff0/100000
@@ -107,7 +107,7 @@ Hdiff = 1.1
 stepcount = 0
 while  udiff > a or vdiff > b or Hdiff > c :
 
-    u, v, H, udiff, vdiff, Hdiff  = fn.vel_time_step(u, v, H, Fx, Fy, dt, nx, ny)
+    u, v, H, udiff, vdiff, Hdiff  = fn.vel_time_step(u, v, H, Fx, Fy, dt, nx, ny, g)
     test.test_eta_H(z,H, nx, ny)
     stepcount +=1
 
