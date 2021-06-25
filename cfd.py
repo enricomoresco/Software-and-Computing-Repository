@@ -94,7 +94,7 @@ Xp, Yp = numpy.meshgrid(xp, yp)
 Fx,Fy = fn.wind_stress(uw, vw, nx, ny, nz)
 
 #find stationary solution
-u, v, H, udiff0, vdiff0, Hdiff0  = fn.vel_time_step(u, v, H, Fx, Fy, dt, nx, ny,g)
+u, v, H, udiff0, vdiff0, Hdiff0  = fn.vel_time_step(u,v,H,Fx,Fy,dx,dy,dz,dt, nx, ny, nz, fco, g,nu,z)
 
 diff0 = udiff0 + vdiff0 + Hdiff0
 a = diff0/100000
@@ -107,7 +107,7 @@ Hdiff = 1.1
 stepcount = 0
 while  udiff > a or vdiff > b or Hdiff > c :
 
-    u, v, H, udiff, vdiff, Hdiff  = fn.vel_time_step(u, v, H, Fx, Fy, dt, nx, ny, g)
+    u, v, H, udiff, vdiff, Hdiff  = fn.vel_time_step(u,v,H,Fx,Fy,dx,dy,dz,dt, nx, ny, nz, fco, g,nu,z)
     test.test_eta_H(z,H, nx, ny)
     stepcount +=1
 
@@ -124,11 +124,11 @@ vbot[:,:]=v[0,:,:]
 #plot
 
 fig = pyplot.figure(figsize = (11,7), dpi=100)
-pyplot.quiver(Y, X, utop, vtop);
+pyplot.quiver(X, Y, utop, vtop);
 fig.savefig('output_figures/vel_top_plot.png')
 
 fig = pyplot.figure(figsize = (11,7), dpi=100)
-pyplot.quiver(Y, X, ubot, vbot);
+pyplot.quiver(X, Y, ubot, vbot);
 fig.savefig('output_figures/vel_bot_plot.png')
 
 fig = pyplot.figure(figsize=(11, 7), dpi=100)
