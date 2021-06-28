@@ -3,10 +3,9 @@ import numpy
 #calculate bottom stress
 
 def bottom_stress(u, v):
-    dim = numpy.shape(u)
-    nz = dim[0]
-    nx = dim[1]
-    ny = dim[2]
+    nx = len(u[0,:,0])
+    ny = len(u[0,0,:])
+    nz = 2
     Bx = numpy.zeros(((nz,nx,ny)))
     By = numpy.zeros(((nz,nx,ny)))
     k = 0.01
@@ -18,10 +17,9 @@ def bottom_stress(u, v):
 
 def wind_stress(uw, vw):
     
-    dim = numpy.shape(uw)
-    nx = dim[0]
-    ny = dim[1]
-    nz = 2
+    nx = len(uw[:,0])
+    ny = len(uw[0,:])
+    nz = 2    
     Fx = numpy.zeros(((nz,nx,ny)))
     Fy = numpy.zeros(((nz,nx,ny)))
     k = 0.001
@@ -32,9 +30,9 @@ def wind_stress(uw, vw):
 #x-derivative of 2-variables function
 
 def Dexb(f, dx):
-    dim = numpy.shape(f)
-    nx = dim[0]
-    ny = dim[1]
+    nx = len(f[:,0])
+    ny = len(f[0,:])
+    
     f_1= numpy.zeros((nx,ny))
     f_1[:-1,:]=(f[1:,:]-f[:-1,:])/dx
     return f_1
@@ -42,9 +40,8 @@ def Dexb(f, dx):
 #y-derivative of 2-variables function
 
 def Deyb(f, dy):
-    dim = numpy.shape(f)
-    nx = dim[0]
-    ny = dim[1]
+    nx = len(f[:,0])
+    ny = len(f[0,:])
     f_1 =  numpy.zeros((nx,ny))
     f_1[:,:-1] = (f[:,1:]-f[:,:-1])/dy
     return f_1
@@ -52,10 +49,9 @@ def Deyb(f, dy):
 #x-derivative of 3-variables function
 
 def Dex(f, dx):
-    dim = numpy.shape(f)
-    nz = dim[0]
-    nx = dim[1]
-    ny = dim[2] 
+    nx = len(f[0,:,0])
+    ny = len(f[0,0,:])
+    nz = 2    
     f_1 = numpy.zeros(((nz,nx,ny)))
     f_1[:,:-1,:] = (f[:,1:,:]-f[:,:-1,:])/dx
     return f_1
@@ -63,20 +59,18 @@ def Dex(f, dx):
 #y-derivative of 3-variables function
 
 def Dey(f, dy):
-    dim = numpy.shape(f)
-    nz = dim[0]
-    nx = dim[1]
-    ny = dim[2]
+    nx = len(f[0,:,0])
+    ny = len(f[0,0,:])
+    nz = 2  
     f_1 = numpy.zeros(((nz,nx,ny)))
     f_1[:,:,:-1] = (f[:,:,1:]-f[:,:,:-1])/dy
     return f_1
 
 #second x-derivative of 3-variables function
 def Dex2(f, dx):
-    dim = numpy.shape(f)
-    nz = dim[0]
-    nx = dim[1]
-    ny = dim[2]
+    nx = len(f[0,:,0])
+    ny = len(f[0,0,:])
+    nz = 2  
     f_2 = numpy.zeros(((nz,nx,ny)))
     f_2[:,1:-1,:] = (f[:,2:nx,:]+f[:,0:nx-2,:]-(2*f[:,1:-1,:]))/dx**2
     return f_2
@@ -84,19 +78,17 @@ def Dex2(f, dx):
 #second y-derivative of 3-variables function
 
 def Dey2(f, dy):
-    dim = numpy.shape(f)
-    nz = dim[0]
-    nx = dim[1]
-    ny = dim[2]
+    nx = len(f[0,:,0])
+    ny = len(f[0,0,:])
+    nz = 2  
     f_2 = numpy.zeros(((nz,nx,ny)))
     f_2[:,:,1:-1] = (f[:,:,2:ny]+f[:,:,0:ny-2]-(2*f[:,:,1:-1]))/dy**2
     return f_2
 
 #second x-derivative of 2-variables function
 def Dex2b(f,dx):
-    dim = numpy.shape(f)
-    nx = dim[0]
-    ny = dim[1]
+    nx = len(f[:,0])
+    ny = len(f[0,:])
     f_2 = numpy.zeros((nx,ny))
     f_2[1:-1,:] = (f[2:,:]+f[0:-2,:]-(2*f[1:-1,:]))/dx**2
     return f_2
@@ -104,9 +96,8 @@ def Dex2b(f,dx):
 #second y-derivative of 2-variables function
 
 def Dey2b(f, nx, ny, dy):
-    dim = numpy.shape(f)
-    nx = dim[0]
-    ny = dim[1]
+    nx = len(f[:,0])
+    ny = len(f[0,:])
     f_2 = numpy.zeros((nx,ny))
     f_2[:,1:-1] = (f[:,2:]+f[:,0:-2]-(2*f[:,1:-1]))/dy**2
     return f_2
@@ -116,10 +107,9 @@ def Dey2b(f, nx, ny, dy):
 def udexu(u,dx):
     un = u.copy  
     Dexun = Dex(un,dx)
-    dim = numpy.shape(u)
-    nz = dim[0]
-    nx = dim[1]
-    ny = dim[2]
+    nx = len(u[0,:,0])
+    ny = len(u[0,0,:])
+    nz = 2 
     udxu = numpy.zeros(((nz,nx,ny)))
     udxu[:,1:-1,1:-1] = un[:,1:-1,1:-1]*(Dexun[:,:-2,1:-1]+Dexun[:,1:-1,1:-1])/2
     
@@ -130,10 +120,9 @@ def udexv(u,v,dx):
     un = u.copy()
     vn = v.copy()
     Dexvn = Dex(vn,dx)
-    dim = numpy.shape(u)
-    nz = dim[0]
-    nx = dim[1]
-    ny = dim[2]
+    nx = len(u[0,:,0])
+    ny = len(u[0,0,:])
+    nz = 2 
     udxv = numpy.zeros(((nz,nx,ny)))
     udxv[:,1:-1,1:-1] = un[:,1:-1,1:-1]*(Dexvn[:,:-2,1:-1]+Dexvn[:,1:-1,1:-1])/2
     return udxv
@@ -142,19 +131,17 @@ def vdeyu(u,v,dy):
     un = u.copy()
     vn = v.copy()
     Deyun = Dey(un,dy)  
-    dim = numpy.shape(u)
-    nz = dim[0]
-    nx = dim[1]
-    ny = dim[2]
+    nx = len(u[0,:,0])
+    ny = len(u[0,0,:])
+    nz = 2 
     vdyu = numpy.zeros(((nz,nx,ny)))
     vdyu[:,1:-1,1:-1] = vn[:,1:-1,1:-1]*(Deyun[:,1:-1,:-2]+Deyun[:,1:-1,1:-1])/2
     return vdyu
 
 def vdeyv(v,dy):
-    dim = numpy.shape(v)
-    nz = dim[0]
-    nx = dim[1]
-    ny = dim[2] 
+    nx = len(v[0,:,0])
+    ny = len(v[0,0,:])
+    nz = 2 
     vdyv = numpy.zeros(((nz,nx,ny)))
     vn = v.copy()
     Deyvn = Dey(vn,nx,ny,nz,dy)
@@ -164,10 +151,9 @@ def vdeyv(v,dy):
 #Define how the elevation evolves through time 
 
 def H_time_step(H,u,v,z,dx,dy,dt):
-    dim = numpy.shape(u)
-    nz = dim[0]
-    nx = dim[1]
-    ny = dim[2]
+    nx = len(u[0,:,0])
+    ny = len(u[0,0,:])
+    nz = 2 
     Hn = H.copy()
     U= numpy.zeros((nx+1,ny+1))
     V= numpy.zeros((nx+1,ny+1))

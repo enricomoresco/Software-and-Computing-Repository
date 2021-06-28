@@ -91,15 +91,15 @@ Xp, Yp = numpy.meshgrid(xp, yp)
 
 #calculate wind stress and bottom stress
 
-Fx,Fy = fn.wind_stress(uw, vw, nx, ny, nz)
+Fx,Fy = fn.wind_stress(uw, vw)
 
 #find stationary solution
-u, v, H, udiff0, vdiff0, Hdiff0  = fn.vel_time_step(u,v,H,Fx,Fy,dx,dy,dz,dt, nx, ny, nz, fco, g,nu,z)
+u, v, H, udiff0, vdiff0, Hdiff0  = fn.vel_time_step(u,v,z,H,Fx,Fy,dx,dy,dz ,dt ,g,fco,nu)
 
 diff0 = udiff0 + vdiff0 + Hdiff0
-a = diff0/100000
-b = diff0/100000
-c = diff0/100000
+a = diff0/10000
+b = diff0/10000
+c = diff0/10000
 
 udiff = 1.1
 vdiff = 1.1
@@ -107,7 +107,7 @@ Hdiff = 1.1
 stepcount = 0
 while  udiff > a or vdiff > b or Hdiff > c :
 
-    u, v, H, udiff, vdiff, Hdiff  = fn.vel_time_step(u,v,H,Fx,Fy,dx,dy,dz,dt, nx, ny, nz, fco, g,nu,z)
+    u, v, H, udiff, vdiff, Hdiff  = fn.vel_time_step(u,v,z,H,Fx,Fy,dx,dy,dz ,dt ,g,fco,nu)
     test.test_eta_H(z,H, nx, ny)
     stepcount +=1
 
@@ -124,16 +124,16 @@ vbot[:,:]=v[0,:,:]
 #plot
 
 fig = pyplot.figure(figsize = (11,7), dpi=100)
-pyplot.quiver(X, Y, utop, vtop);
+pyplot.quiver(Y, X, utop, vtop);
 fig.savefig('output_figures/vel_top_plot.png')
 
 fig = pyplot.figure(figsize = (11,7), dpi=100)
-pyplot.quiver(X, Y, ubot, vbot);
+pyplot.quiver(Y, X, ubot, vbot);
 fig.savefig('output_figures/vel_bot_plot.png')
 
 fig = pyplot.figure(figsize=(11, 7), dpi=100)
 ax = fig.gca(projection='3d')                      
-surf = ax.plot_surface(Xp, Yp, H[:], cmap=cm.viridis) 
+surf = ax.plot_surface(Yp, Xp, H[:], cmap=cm.viridis) 
 fig.savefig('output_figures/eta_plot.png')  
 
 print(stepcount,"step")
