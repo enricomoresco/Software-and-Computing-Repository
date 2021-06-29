@@ -1,4 +1,4 @@
-## _PYTHON VERSIONS and LIBRARIES
+## _PYTHON VERSIONS and LIBRARIES_
 
 Is requested the 3.8.5 version of python to run the code (or further updates)
 Furthermore are requested the following libraries: numpy, matplotlib, configparser
