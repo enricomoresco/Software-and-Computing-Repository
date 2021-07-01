@@ -1,12 +1,18 @@
 import numpy
+import copy as cp
 
 #calculate bottom stress
 
 def bottom_stress(u, v):
-    dim = numpy.shape(u)
-    nz = dim[0]
-    nx = dim[1]
-    ny = dim[2]
+    """this function calculates the bottom stress from the velocity field using
+    a default bottom rugosity constant.
+    
+    input: u(zonal current velocity), v(meridional current velocity)
+    output: Bx(zonal bottom stress), By(meridional bottom stress)"""
+    
+    nx = len(u[0,:,0])
+    ny = len(u[0,0,:])
+    nz = 2
     Bx = numpy.zeros(((nz,nx,ny)))
     By = numpy.zeros(((nz,nx,ny)))
     k = 0.01
@@ -17,11 +23,15 @@ def bottom_stress(u, v):
 #calculate wind stress
 
 def wind_stress(uw, vw):
+    """this function calculates the wind stress from the velocity field using
+    a default air-water density-rate constant.
     
-    dim = numpy.shape(uw)
-    nx = dim[0]
-    ny = dim[1]
-    nz = 2
+    input: u(zonal wind velocity), v(meridional wind velocity)
+    output: Bx(zonal wind stress), By(meridional wind stress)"""
+    
+    nx = len(uw[:,0])
+    ny = len(uw[0,:])
+    nz = 2    
     Fx = numpy.zeros(((nz,nx,ny)))
     Fy = numpy.zeros(((nz,nx,ny)))
     k = 0.001
@@ -32,9 +42,9 @@ def wind_stress(uw, vw):
 #x-derivative of 2-variables function
 
 def Dexb(f, dx):
-    dim = numpy.shape(f)
-    nx = dim[0]
-    ny = dim[1]
+    nx = len(f[:,0])
+    ny = len(f[0,:])
+    
     f_1= numpy.zeros((nx,ny))
     f_1[:-1,:]=(f[1:,:]-f[:-1,:])/dx
     return f_1
@@ -42,9 +52,8 @@ def Dexb(f, dx):
 #y-derivative of 2-variables function
 
 def Deyb(f, dy):
-    dim = numpy.shape(f)
-    nx = dim[0]
-    ny = dim[1]
+    nx = len(f[:,0])
+    ny = len(f[0,:])
     f_1 =  numpy.zeros((nx,ny))
     f_1[:,:-1] = (f[:,1:]-f[:,:-1])/dy
     return f_1
@@ -52,10 +61,9 @@ def Deyb(f, dy):
 #x-derivative of 3-variables function
 
 def Dex(f, dx):
-    dim = numpy.shape(f)
-    nz = dim[0]
-    nx = dim[1]
-    ny = dim[2] 
+    nx = len(f[0,:,0])
+    ny = len(f[0,0,:])
+    nz = 2    
     f_1 = numpy.zeros(((nz,nx,ny)))
     f_1[:,:-1,:] = (f[:,1:,:]-f[:,:-1,:])/dx
     return f_1
@@ -63,20 +71,18 @@ def Dex(f, dx):
 #y-derivative of 3-variables function
 
 def Dey(f, dy):
-    dim = numpy.shape(f)
-    nz = dim[0]
-    nx = dim[1]
-    ny = dim[2]
+    nx = len(f[0,:,0])
+    ny = len(f[0,0,:])
+    nz = 2  
     f_1 = numpy.zeros(((nz,nx,ny)))
     f_1[:,:,:-1] = (f[:,:,1:]-f[:,:,:-1])/dy
     return f_1
 
 #second x-derivative of 3-variables function
 def Dex2(f, dx):
-    dim = numpy.shape(f)
-    nz = dim[0]
-    nx = dim[1]
-    ny = dim[2]
+    nx = len(f[0,:,0])
+    ny = len(f[0,0,:])
+    nz = 2  
     f_2 = numpy.zeros(((nz,nx,ny)))
     f_2[:,1:-1,:] = (f[:,2:nx,:]+f[:,0:nx-2,:]-(2*f[:,1:-1,:]))/dx**2
     return f_2
@@ -84,19 +90,17 @@ def Dex2(f, dx):
 #second y-derivative of 3-variables function
 
 def Dey2(f, dy):
-    dim = numpy.shape(f)
-    nz = dim[0]
-    nx = dim[1]
-    ny = dim[2]
+    nx = len(f[0,:,0])
+    ny = len(f[0,0,:])
+    nz = 2  
     f_2 = numpy.zeros(((nz,nx,ny)))
     f_2[:,:,1:-1] = (f[:,:,2:ny]+f[:,:,0:ny-2]-(2*f[:,:,1:-1]))/dy**2
     return f_2
 
 #second x-derivative of 2-variables function
 def Dex2b(f,dx):
-    dim = numpy.shape(f)
-    nx = dim[0]
-    ny = dim[1]
+    nx = len(f[:,0])
+    ny = len(f[0,:])
     f_2 = numpy.zeros((nx,ny))
     f_2[1:-1,:] = (f[2:,:]+f[0:-2,:]-(2*f[1:-1,:]))/dx**2
     return f_2
@@ -104,22 +108,29 @@ def Dex2b(f,dx):
 #second y-derivative of 2-variables function
 
 def Dey2b(f, nx, ny, dy):
-    dim = numpy.shape(f)
-    nx = dim[0]
-    ny = dim[1]
+    nx = len(f[:,0])
+    ny = len(f[0,:])
     f_2 = numpy.zeros((nx,ny))
     f_2[:,1:-1] = (f[:,2:]+f[:,0:-2]-(2*f[:,1:-1]))/dy**2
     return f_2
 
 #Advection terms
 
+"""the following functions are the four advection terms needed for the
+implementation of the NS-equations,
+input : 
+        u(zonal current velocity), v(meridional current velocity ),
+        dx and dy (grid steps)
+
+output : udxu,udxv,vdyu,vdyv (the four advection terms)
+"""
+
 def udexu(u,dx):
-    un = u.copy  
+    un = cp.deepcopy(u)  
     Dexun = Dex(un,dx)
-    dim = numpy.shape(u)
-    nz = dim[0]
-    nx = dim[1]
-    ny = dim[2]
+    nx = len(u[0,:,0])
+    ny = len(u[0,0,:])
+    nz = 2 
     udxu = numpy.zeros(((nz,nx,ny)))
     udxu[:,1:-1,1:-1] = un[:,1:-1,1:-1]*(Dexun[:,:-2,1:-1]+Dexun[:,1:-1,1:-1])/2
     
@@ -127,47 +138,53 @@ def udexu(u,dx):
 
 
 def udexv(u,v,dx):
-    un = u.copy()
-    vn = v.copy()
+    un = cp.deepcopy(u)
+    vn = cp.deepcopy(v)
     Dexvn = Dex(vn,dx)
-    dim = numpy.shape(u)
-    nz = dim[0]
-    nx = dim[1]
-    ny = dim[2]
+    nx = len(u[0,:,0])
+    ny = len(u[0,0,:])
+    nz = 2 
     udxv = numpy.zeros(((nz,nx,ny)))
     udxv[:,1:-1,1:-1] = un[:,1:-1,1:-1]*(Dexvn[:,:-2,1:-1]+Dexvn[:,1:-1,1:-1])/2
     return udxv
 
 def vdeyu(u,v,dy):
-    un = u.copy()
-    vn = v.copy()
+    un = cp.deepcopy(u)
+    vn = cp.deepcopy(v)
     Deyun = Dey(un,dy)  
-    dim = numpy.shape(u)
-    nz = dim[0]
-    nx = dim[1]
-    ny = dim[2]
+    nx = len(u[0,:,0])
+    ny = len(u[0,0,:])
+    nz = 2 
     vdyu = numpy.zeros(((nz,nx,ny)))
     vdyu[:,1:-1,1:-1] = vn[:,1:-1,1:-1]*(Deyun[:,1:-1,:-2]+Deyun[:,1:-1,1:-1])/2
     return vdyu
 
 def vdeyv(v,dy):
-    dim = numpy.shape(v)
-    nz = dim[0]
-    nx = dim[1]
-    ny = dim[2] 
+    nx = len(v[0,:,0])
+    ny = len(v[0,0,:])
+    nz = 2 
     vdyv = numpy.zeros(((nz,nx,ny)))
-    vn = v.copy()
-    Deyvn = Dey(vn,nx,ny,nz,dy)
+    vn = cp.deepcopy(v)
+    Deyvn = Dey(vn,dy)
     vdyv[:,1:-1,1:-1] = vn[:,1:-1,1:-1]*(Deyvn[:,1:-1,:-2]+Deyvn[:,1:-1,1:-1])/2
     return vdyv
    
 #Define how the elevation evolves through time 
 
+
+
 def H_time_step(H,u,v,z,dx,dy,dt):
-    dim = numpy.shape(u)
-    nz = dim[0]
-    nx = dim[1]
-    ny = dim[2]
+    
+    """this function implements the evolution of eta in the time step
+    from the vertical integral velocities U and V , using incompressibility and continuity equation
+    input: H(elevation of the surface), u and v (current horizontal velocities), dx and dy (grid steps), dt(t step)
+    output:H(elevation of the surface)
+    
+    for futher deepening is provided "Phisical_and_Numerical_formulation"
+    """
+    nx = len(u[0,:,0])
+    ny = len(u[0,0,:])
+    nz = 2 
     Hn = H.copy()
     U= numpy.zeros((nx+1,ny+1))
     V= numpy.zeros((nx+1,ny+1))
@@ -188,6 +205,21 @@ def H_time_step(H,u,v,z,dx,dy,dt):
 #Define how the velocity evolves through time 
 
 def vel_time_step(u,v,z,H,Fx,Fy,dx,dy,dz ,dt ,g,fco,nu):
+    
+    """this function implements the evolution of all the variables (u,v and H) 
+    in the time step:
+    for H simply uses "H_time_step" as implemented before
+    for u, v uses a simplification of NS equation
+    
+    input: u and v (horizontal current velocities), H(elevation of the surface),
+    Fx and Fy (horizontal wind stress), dx and dy (grid steps), dt(t step), 
+    g(gravity acceleration), fco(coriolis factor), nu(eddy viscosity)
+    
+    output: u and v (horizontal current velocities), H(elevation of the surface)
+    udiff,vdiff,Hdiff (elements for the implementation of stationary solution research)
+    
+    for futher deepening is provided "Phisical_and_Numerical_formulation"
+    """
     nx = len(u[0,:,0])
     ny = len(u[0,0,:])
     nz = 2 
