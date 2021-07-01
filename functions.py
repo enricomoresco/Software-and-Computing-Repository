@@ -204,7 +204,7 @@ def H_time_step(H,u,v,z,dx,dy,dt):
 
 #Define how the velocity evolves through time 
 
-def vel_time_step(u,v,z,H,Fx,Fy,dx,dy,dz ,dt ,g,fco,nu):
+def vel_time_step(u,v,z,H,Fx,Fy,dx,dy,dz ,dt,g,fco,nu):
     
     """this function implements the evolution of all the variables (u,v and H) 
     in the time step:
