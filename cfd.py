@@ -1,6 +1,6 @@
 import numpy
 import functions as fn
-import testing_functions as test
+import input_testing_function as test
 from configparser import ConfigParser
 from matplotlib import pyplot, cm
 
@@ -8,22 +8,17 @@ from matplotlib import pyplot, cm
 
 parser = ConfigParser()
 parser.read('initial_conditions/const.txt')
-nx = parser.getint('numerical_variables', 'nx',
-                         fallback = -1) 
-ny = parser.getint('numerical_variables', 'ny',
-                         fallback = -1) 
-x = parser.getfloat('physical_variables', 'x',
-                         fallback = -1) 
-y = parser.getfloat('physical_variables', 'y',
-                         fallback = -1) 
-z = parser.getfloat('physical_variables', 'z',
-                         fallback = -1) 
+nx = parser.getint('numerical_variables', 'nx') 
+ny = parser.getint('numerical_variables', 'ny') 
+x = parser.getfloat('physical_variables', 'x') 
+y = parser.getfloat('physical_variables', 'y') 
+z = parser.getfloat('physical_variables', 'z') 
 fco = parser.getfloat('physical_variables', 'fco',
-                         fallback = -1) 
+                         fallback = 0) 
 g = parser.getfloat('physical_variables', 'g',
-                         fallback = -1) 
+                         fallback = 9.81) 
 nu = parser.getfloat('physical_variables', 'nu',
-                         fallback = -1) 
+                         fallback = 0.004) 
 
 #read IC
 
@@ -121,22 +116,13 @@ vtop[:,:]=v[1,:,:]
 ubot[:,:]=u[0,:,:]
 vbot[:,:]=v[0,:,:]
 
-#plot
+#write on file
 
-fig = pyplot.figure(figsize = (11,7), dpi=100)
-pyplot.quiver(Y, X, utop, vtop);
-fig.savefig('output_figures/vel_top_plot.png')
-
-fig = pyplot.figure(figsize = (11,7), dpi=100)
-pyplot.quiver(Y, X, ubot, vbot);
-fig.savefig('output_figures/vel_bot_plot.png')
-
-fig = pyplot.figure(figsize=(11, 7), dpi=100)
-ax = fig.gca(projection='3d')                      
-surf = ax.plot_surface(Yp, Xp, H[:], cmap=cm.viridis) 
-fig.savefig('output_figures/eta_plot.png')  
-
-print(stepcount,"step")
+numpy.savetxt('output_data/utop_out', utop,'%.2e')
+numpy.savetxt('output_data/vtop_out', vtop,'%.2e')
+numpy.savetxt('output_data/ubot_out', ubot,'%.2e')
+numpy.savetxt('output_data/vbot_out', vbot,'%.2e')
+numpy.savetxt('output_data/eta_out', H,'%.2e')
 
 
 

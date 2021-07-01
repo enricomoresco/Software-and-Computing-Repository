@@ -1,6 +1,6 @@
 import numpy
 from configparser import ConfigParser
-import testing_functions as test
+import input_testing_function as test
 
 #read const.txt
 
@@ -63,9 +63,6 @@ u = numpy.zeros(((2,nx,ny)))
 
 u[1,:,:] = data_u_top[:,:]
 u[0,:,:] = data_u_bot[:,:]
-a = len(u[:,0,0])
-print(a)
-
 
 v = numpy.zeros(((2,nx,ny)))
 
