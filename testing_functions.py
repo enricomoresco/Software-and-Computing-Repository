@@ -23,8 +23,8 @@ def custom_initialize(n):
    
     elif n == 1:
         
-        "max velocity divergence in the domain"
-        
+        "max velocity divergence a point"
+        np.random.seed(30)
         nx2 = int(50* np.random.rand(1))+1
         ny2 = int(50* np.random.rand(1))+1    
         nx = 2*nx2+1
@@ -42,6 +42,7 @@ def custom_initialize(n):
     
         "spike of mass in the center"
         
+        np.random.seed(30)
         nx2 = int(50* np.random.rand(1))+1
         ny2 = int(50* np.random.rand(1))+1    
         nx = 2*nx2+1
@@ -74,6 +75,7 @@ def rand_initialize():
 
     "CREATES CASUAL GRID (unitary step) WITH CASUAL IC"
     
+    np.random.seed(30)
     nx = int(100* np.random.rand(1))+2
     ny = int(100* np.random.rand(1))+2
     nz = 2

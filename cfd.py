@@ -118,11 +118,13 @@ vbot[:,:]=v[0,:,:]
 
 #write on file
 
-numpy.savetxt('output_data/utop_out', utop,'%.2e')
-numpy.savetxt('output_data/vtop_out', vtop,'%.2e')
-numpy.savetxt('output_data/ubot_out', ubot,'%.2e')
-numpy.savetxt('output_data/vbot_out', vbot,'%.2e')
-numpy.savetxt('output_data/eta_out', H,'%.2e')
+numpy.savetxt('output_data/uwind', uw)
+numpy.savetxt('output_data/vwind', vw)
+numpy.savetxt('output_data/utop_out', utop)
+numpy.savetxt('output_data/vtop_out', vtop)
+numpy.savetxt('output_data/ubot_out', ubot)
+numpy.savetxt('output_data/vbot_out', vbot)
+numpy.savetxt('output_data/eta_out', H)
 
 xc = numpy.linspace(0, x, nx)
 yc = numpy.linspace(0, y, ny)
@@ -134,26 +136,9 @@ yp = numpy.linspace(0, y, ny+1)
 zp = numpy.linspace(0, z, nz)
 Xp, Yp = numpy.meshgrid(xp, yp)
 
-Ht = H.transpose()
-utt = utop.transpose()
-vtt = vtop.transpose()
-ubt = ubot.transpose()
-vbt = vbot.transpose()
+utt = uw.transpose()
+vtt = vw.transpose()
 
-#plot
-
-fig = pyplot.figure(figsize = (11,7), dpi=100)
-pyplot.quiver(X, Y, utt, vtt);
-fig.savefig('output_figures/vel_top_plot.png')
-
-fig = pyplot.figure(figsize = (11,7), dpi=100)
-pyplot.quiver(X, Y, ubt, vbt);
-fig.savefig('output_figures/vel_bot_plot.png')
-
-fig = pyplot.figure(figsize=(11, 7), dpi=100)
-ax = fig.gca(projection='3d')                      
-surf = ax.plot_surface(Xp, Yp, Ht[:], cmap=cm.viridis) 
-fig.savefig('output_figures/eta_plot.png')  
 
 print(stepcount)
 

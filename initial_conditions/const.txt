@@ -5,7 +5,7 @@ x = 2000
 y = 2000
 z = 300
 #coriolis frequency [s^-1]
-fco = 0.1
+fco = 0.0001
 #gravity acceleration [m/s^2]
 g = 9.81
 #viscosity constant
