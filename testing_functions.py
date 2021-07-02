@@ -28,7 +28,7 @@ def custom_initialize(n):
         nx2 = int(50* np.random.rand(1))+1
         ny2 = int(50* np.random.rand(1))+1    
         nx = 2*nx2+1
-        ny = 2*nx2+1
+        ny = 2*ny2+1
         nz = 2
         u = np.zeros(((nz,nx,ny)))
         v = np.zeros(((nz,nx,ny)))
@@ -45,7 +45,7 @@ def custom_initialize(n):
         nx2 = int(50* np.random.rand(1))+1
         ny2 = int(50* np.random.rand(1))+1    
         nx = 2*nx2+1
-        ny = 2*nx2+1
+        ny = 2*ny2+1
         nz = 2        
         u = np.zeros(((nz,nx,ny)))
         v = np.zeros(((nz,nx,ny)))
@@ -165,10 +165,13 @@ def test_H_timestep_mass_conservation_custom_initialize(z):
     assert 0.0000000001 > d_eta_max, "mass conservation failed"
     print("mass conservation verifed")
 
-#to verify the momentum conservation in the advection parallel terms:
+#to verify the momentum conservation in the advection terms
 
 
-def test_udxu_x_momentum_conservation_random_initialize(iterations=10,step=0):
+
+
+def test_udexu_x_momentum_conservation_random_initialize(iterations=10,step=0):
+    "udexu with random IC"
     
     mx = []    
     
@@ -207,7 +210,206 @@ def test_udxu_x_momentum_conservation_random_initialize(iterations=10,step=0):
     
 
 
-def test_vdyvy_momentum_conservation_random_initialize(iterations=10,step=0):
+
+
+def test_udexu_x_momentum_conservation_custom_initialize():
+    "udexu with custom IC"
+    
+    mx = []    
+    
+    for i in range (0,2):
+        
+
+
+        nx, ny, nz,u,v,H,dt,dx,dy,dz = custom_initialize(i)
+        n = nx * ny
+
+        udxu = fn.udexu(u, dx)
+        sum_adv_u=0
+        
+        for i in range (1,nx-1):
+            for j in range (1,ny-1):
+                for k in range (0,2):
+                    
+                    sum_adv_u+=udxu[k,i,j]
+
+
+
+        mx.append(sum_adv_u/n)
+
+
+        
+    
+    
+    d_u_max = max(mx)
+
+
+        
+    assert 0.0000000001 > d_u_max, "x-momentum conservation failed"
+
+    
+    print("x-momentum conservation verifed")
+    
+def test_vdeyu_x_momentum_conservation_random_initialize(iterations=10,step=0):
+    "vdeyu with random IC"
+    
+    mx = []    
+    
+    while iterations > step :
+        
+
+
+        nx, ny, nz,u,v,H,dt,dx,dy,dz = rand_initialize()
+        n = nx * ny
+
+        vdyu = fn.vdeyv(v, dy)
+        sum_adv_u=0
+        
+        for i in range (1,nx-1):
+            for j in range (1,ny-1):
+                for k in range (0,2):
+                    
+                    sum_adv_u+=vdyu[k,i,j]
+
+
+
+        mx.append(sum_adv_u/n)
+
+
+        step+=1
+    
+    
+    d_u_max = max(mx)
+
+
+        
+    assert 0.0000000001 > d_u_max, "x-momentum conservation failed"
+
+    
+    print("x-momentum conservation verifed")
+    
+
+def test_vdeyu_x_momentum_conservation_custom_initialize():
+    "test vdyu, custom inizialization"    
+    
+    
+    mx = []    
+    
+    for i in range (0,2):
+        
+
+
+        nx, ny, nz,u,v,H,dt,dx,dy,dz = custom_initialize(i)
+        n = nx * ny
+
+        vdyu = fn.vdeyv(v, dy)
+        sum_adv_u=0
+        
+        for i in range (1,nx-1):
+            for j in range (1,ny-1):
+                for k in range (0,2):
+                    
+                    sum_adv_u+=vdyu[k,i,j]
+
+
+
+        mx.append(sum_adv_u/n)
+
+
+        
+    
+    
+    d_u_max = max(mx)
+
+
+        
+    assert 0.0000000001 > d_u_max, "y-momentum conservation failed"
+
+    
+    print("y-momentum conservation verifed")
+    
+
+def test_udexv_y_momentum_conservation_random_initialize(iterations=10,step=0):
+    "udexv with random IC"
+    
+    my = []    
+    
+    while iterations > step :
+        
+
+
+        nx, ny, nz,u,v,H,dt,dx,dy,dz = rand_initialize()
+        n = nx * ny
+
+        udxv = fn.udexu(u, dx)
+        sum_adv_v=0
+        
+        for i in range (1,nx-1):
+            for j in range (1,ny-1):
+                for k in range (0,2):
+                    
+                    sum_adv_v+=udxv[k,i,j]
+
+
+
+        my.append(sum_adv_v/n)
+
+
+        step+=1
+    
+    
+    d_v_max = max(my)
+
+
+        
+    assert 0.0000000001 > d_v_max, "y-momentum conservation failed"
+
+    
+    print("x-momentum conservation verifed")
+    
+
+def test_udexv_y_momentum_conservation_custom_initialize():
+    "test udexv, custom inizialization"    
+    
+    
+    my = []    
+    
+    for i in range (0,2):
+        
+
+
+        nx, ny, nz,u,v,H,dt,dx,dy,dz = custom_initialize(i)
+        n = nx * ny
+
+        udxv = fn.udexu(u,dx)
+        sum_adv_v=0
+        
+        for i in range (1,nx-1):
+            for j in range (1,ny-1):
+                for k in range (0,2):
+                    
+                    sum_adv_v+=udxv[k,i,j]
+
+
+
+        my.append(sum_adv_v/n)
+
+
+        
+    
+    
+    d_v_max = max(my)
+
+
+        
+    assert 0.0000000001 > d_v_max, "x-momentum conservation failed"
+
+    
+    print("y-momentum conservation verifed")
+
+
+def test_vdeyv_y_momentum_conservation_random_initialize(iterations=10,step=0):
+    "vdeyv with random IC"
     
     my = []
     
@@ -239,8 +441,8 @@ def test_vdyvy_momentum_conservation_random_initialize(iterations=10,step=0):
     
     
 
-def test_vdyv_y_momentum_conservation_custom():
-    
+def test_vdeyv_y_momentum_conservation_custom():
+    "vdeyv with custom IC"
     my = []
     
     
@@ -266,9 +468,13 @@ def test_vdyv_y_momentum_conservation_custom():
     print("y-momentum conservation verifed")
 
 
+"test of the evolution of the boundary conditions for the function vel_time_step"
+
 
 @given(z=st.floats(200,2000),fco=st.floats(-0.0001,0.0001),nu =st.floats(0.0001,0.01),g=st.floats(9.80,9.82)) 
 def test_vel_time_step_u_BC_evolution_random(z,fco,nu,g):
+    "test u BC, random initialization"
+    
     iterations=10
     step=0
     while iterations > step :
@@ -308,6 +514,8 @@ def test_vel_time_step_u_BC_evolution_random(z,fco,nu,g):
 
 @given(z=st.floats(200,2000),fco=st.floats(-0.0001,0.0001),nu =st.floats(0.0001,0.01),g=st.floats(9.80,9.82)) 
 def test_vel_time_step_u_BC_evolution_custom_initialize(z,fco,nu,g):
+    "test u BC, custom initialization"
+    
     for i in range (0,2):
     
         nx, ny, nz,u,v,H,dt,dx,dy,dz = custom_initialize(i)
@@ -343,6 +551,7 @@ def test_vel_time_step_u_BC_evolution_custom_initialize(z,fco,nu,g):
 
 @given(z=st.floats(200,2000),fco=st.floats(-0.0001,0.0001),nu =st.floats(0.0001,0.01),g=st.floats(9.80,9.82)) 
 def test_vel_time_step_v_BC_evolution_random_initialize(z,fco,nu,g):
+    "test v BC, random initialization"
     iterations=10
     step=0
     while iterations > step :
@@ -379,6 +588,7 @@ def test_vel_time_step_v_BC_evolution_random_initialize(z,fco,nu,g):
         
 @given(z=st.floats(200,2000),fco=st.floats(-0.0001,0.0001),nu =st.floats(0.0001,0.01),g=st.floats(9.80,9.82)) 
 def test_vel_time_step_v_BC_evolution_custom_initialize(z,fco,nu,g):
+    "test v BC. custom inizialization"
     for i in range (0,2):
     
         nx, ny, nz,u,v,H,dt,dx,dy,dz = custom_initialize(i)
@@ -413,10 +623,13 @@ def test_vel_time_step_v_BC_evolution_custom_initialize(z,fco,nu,g):
     
     print("v BC evolution verified")
     
-    print("v BC evolution verified")
+
     
 @given(z=st.floats(200,2000),fco=st.floats(-0.0001,0.0001),nu =st.floats(0.0001,0.01),g=st.floats(9.80,9.82)) 
 def test_vel_time_step_H_BC_evolution_random_initialize(z,fco,nu,g):
+    "test H BC, random initialization"
+    
+    
     iterations=10
     step=0
     while iterations > step :
@@ -450,6 +663,8 @@ def test_vel_time_step_H_BC_evolution_random_initialize(z,fco,nu,g):
     
 @given(z=st.floats(200,2000),fco=st.floats(-0.0001,0.0001),nu =st.floats(0.0001,0.01),g=st.floats(9.80,9.82)) 
 def test_vel_time_step_H_BC_evolution_custom_initialize(z,fco,nu,g):
+    "test H BC, custom initialization"
+    
     for i in range (0,2):
     
     
@@ -483,47 +698,7 @@ def test_vel_time_step_H_BC_evolution_custom_initialize(z,fco,nu,g):
 
 
 
-#to verify the momentum conservation in the advection parallel terms:
-
-
-def test_udxu_x_momentum_conservation_custom_initialize():
     
-    mx = []    
-    
-    for i in range (0,2):
-        
-
-
-        nx, ny, nz,u,v,H,dt,dx,dy,dz = custom_initialize(i)
-        n = nx * ny
-
-        udxu = fn.udexu(u, dx)
-        sum_adv_u=0
-        
-        for i in range (1,nx-1):
-            for j in range (1,ny-1):
-                for k in range (0,2):
-                    
-                    sum_adv_u+=udxu[k,i,j]
-
-
-
-        mx.append(sum_adv_u/n)
-
-
-        
-    
-    
-    d_u_max = max(mx)
-
-
-        
-    assert 0.0000000001 > d_u_max, "x-momentum conservation failed"
-
-    
-    print("x-momentum conservation verifed")
-    
-
 
 
 

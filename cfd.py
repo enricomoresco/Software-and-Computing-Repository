@@ -1,6 +1,6 @@
 import numpy
 import functions as fn
-import input_testing_function as test
+import input_testing_functions as test
 from configparser import ConfigParser
 from matplotlib import pyplot, cm
 
@@ -124,5 +124,37 @@ numpy.savetxt('output_data/ubot_out', ubot,'%.2e')
 numpy.savetxt('output_data/vbot_out', vbot,'%.2e')
 numpy.savetxt('output_data/eta_out', H,'%.2e')
 
+xc = numpy.linspace(0, x, nx)
+yc = numpy.linspace(0, y, ny)
+zc = numpy.linspace(0, z, nz)
+X, Y = numpy.meshgrid(xc, yc)
+
+xp = numpy.linspace(0, x, nx+1)
+yp = numpy.linspace(0, y, ny+1)
+zp = numpy.linspace(0, z, nz)
+Xp, Yp = numpy.meshgrid(xp, yp)
+
+Ht = H.transpose()
+utt = utop.transpose()
+vtt = vtop.transpose()
+ubt = ubot.transpose()
+vbt = vbot.transpose()
+
+#plot
+
+fig = pyplot.figure(figsize = (11,7), dpi=100)
+pyplot.quiver(X, Y, utt, vtt);
+fig.savefig('output_figures/vel_top_plot.png')
+
+fig = pyplot.figure(figsize = (11,7), dpi=100)
+pyplot.quiver(X, Y, ubt, vbt);
+fig.savefig('output_figures/vel_bot_plot.png')
+
+fig = pyplot.figure(figsize=(11, 7), dpi=100)
+ax = fig.gca(projection='3d')                      
+surf = ax.plot_surface(Xp, Yp, Ht[:], cmap=cm.viridis) 
+fig.savefig('output_figures/eta_plot.png')  
+
+print(stepcount)
 
 

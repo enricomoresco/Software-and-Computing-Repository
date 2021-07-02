@@ -14,7 +14,7 @@ ubot = numpy.loadtxt(datafile_u_bot).T
 vbot = numpy.loadtxt(datafile_v_bot).T
 H =  numpy.loadtxt(datafile_eta).T
 
-print(utop)
+
 
 nx = len(utop[0])
 ny = len(vtop[:,0])
@@ -41,15 +41,15 @@ Xp, Yp = numpy.meshgrid(xp, yp)
 #plot
 
 fig = pyplot.figure(figsize = (11,7), dpi=100)
-pyplot.quiver(Y, X, utop, vtop);
+pyplot.quiver(X, Y, utop, vtop);
 fig.savefig('output_figures/vel_top_plot.png')
 
 fig = pyplot.figure(figsize = (11,7), dpi=100)
-pyplot.quiver(Y, X, ubot, vbot);
+pyplot.quiver(X, Y, ubot, vbot);
 fig.savefig('output_figures/vel_bot_plot.png')
 
 fig = pyplot.figure(figsize=(11, 7), dpi=100)
 ax = fig.gca(projection='3d')                      
-surf = ax.plot_surface(Yp, Xp, H[:], cmap=cm.viridis) 
+surf = ax.plot_surface(Xp, Yp, H[:], cmap=cm.viridis) 
 fig.savefig('output_figures/eta_plot.png')  
 

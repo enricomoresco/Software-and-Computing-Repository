@@ -185,7 +185,7 @@ def H_time_step(H,u,v,z,dx,dy,dt):
     nx = len(u[0,:,0])
     ny = len(u[0,0,:])
     nz = 2 
-    Hn = H.copy()
+    Hn = cp.deepcopy(H)
     U= numpy.zeros((nx+1,ny+1))
     V= numpy.zeros((nx+1,ny+1))
     U[1:,1:]=(sum(u[:,:,:]))*(z+Hn[:-1,:-1])/nz
