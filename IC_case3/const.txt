@@ -1,0 +1,18 @@
+
+[physical_variables]
+#x,y,z dimensions [m]
+x = 2000
+y = 2000
+z = 300
+#coriolis frequency [s^-1]
+fco = 0.1
+#gravity acceleration [m/s^2]
+g = 9.81
+#viscosity constant
+nu=0.4
+[numerical_variables]
+#number of grid points on x,y axes
+nx = 11
+
+ny = 11
+
