@@ -24,7 +24,7 @@ def custom_initialize(n):
     elif n == 1:
         
         "max velocity divergence a point"
-        np.random.seed(30)
+        
         nx2 = int(50* np.random.rand(1))+1
         ny2 = int(50* np.random.rand(1))+1    
         nx = 2*nx2+1
@@ -75,7 +75,6 @@ def rand_initialize():
 
     "CREATES CASUAL GRID (unitary step) WITH CASUAL IC"
     
-    np.random.seed(30)
     nx = int(100* np.random.rand(1))+2
     ny = int(100* np.random.rand(1))+2
     nz = 2
@@ -264,11 +263,11 @@ def test_vdeyu_x_momentum_conservation_random_initialize(iterations=10,step=0):
         nx, ny, nz,u,v,H,dt,dx,dy,dz = rand_initialize()
         n = nx * ny
 
-        vdyu = fn.vdeyv(v, dy)
+        vdyu = fn.vdeyu(u,v, dy)
         sum_adv_u=0
         
-        for i in range (1,nx-1):
-            for j in range (1,ny-1):
+        for i in range (1,nx-2):
+            for j in range (1,ny-2):
                 for k in range (0,2):
                     
                     sum_adv_u+=vdyu[k,i,j]

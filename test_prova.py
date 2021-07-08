@@ -6,134 +6,183 @@ from hypothesis import given
 #test functions
 
 
+
+
 def custom_initialize(n):
     
     "CREATES CASUAL GRID (unitary step) WITH CUSTOM IC"
     
     if n == 0:
         
-        "max velocity integral on the domain"
+        "max wind velocity integral on the domain"
         
-        nx = int(100* np.random.rand(1))+2
-        ny = int(100* np.random.rand(1))+2    
+        nx = 10
+        ny = 10
         nz = 2
-        u = np.ones(((nz,nx,ny)))
-        v = np.ones(((nz,nx,ny)))
+        u = np.zeros(((nz,nx,ny)))
+        v = np.zeros(((nz,nx,ny)))
         H = np.zeros((nx+1,ny+1))
+        uw = 15*np.ones((nx,ny))
+        vw = 15*np.ones((nx,ny))
+        
+       
    
     elif n == 1:
         
-        "max velocity divergence a point"
-        np.random.seed(30)
-        nx2 = int(50* np.random.rand(1))+1
-        ny2 = int(50* np.random.rand(1))+1    
-        nx = 2*nx2+1
-        ny = 2*ny2+1
+        "max wind field divergence"
+        
+        nx = 10
+        ny = 100
         nz = 2
         u = np.zeros(((nz,nx,ny)))
         v = np.zeros(((nz,nx,ny)))
-        u[:,nx2+1,ny2]=-1
-        u[:,nx2-1,ny2]=1
-        v[:,nx2,ny2-1]=1
-        v[:,nx2,ny2+1]=-1
         H = np.zeros((nx+1,ny+1))
+        uw = 15*np.ones((nx,ny))
+        uw[5:,:]= -15
+        vw = 15*np.ones((nx,ny))
+        vw[:,0:]= -15
+        
+        
     
     elif n == 2:
     
-        "spike of mass in the center"
-        
-        np.random.seed(30)
-        nx2 = int(50* np.random.rand(1))+1
-        ny2 = int(50* np.random.rand(1))+1    
-        nx = 2*nx2+1
-        ny = 2*ny2+1
-        nz = 2        
+        "max wind field rotor"
+       
+        nx = 10
+        ny = 10 
+        nz = 2
         u = np.zeros(((nz,nx,ny)))
         v = np.zeros(((nz,nx,ny)))
-        H = np.zeros((nx,ny))
-        H[nx2,ny2] = 2
-    u[:,0,:] = 0
-    v[:,0,:] = 0
-    u[:,-1,:] = 0
-    v[:,-1,:] = 0
-    u[:,:,0] = 0
-    v[:,:,0] = 0
-    u[:,:,-1] = 0
-    v[:,:,-1] = 0
-    H[0,:] = H[1,:]
-    H[-1,:]= H[-2,:]
-    H[:,0] = H[:,1]
-    H[:,-1] = H[:,-2]
-    dt=1
-    dx=1
-    dy=1
-    dz=1        
-    return nx,ny,nz,u,v,H,dt,dx,dy,dz
+        H = np.zeros((nx+1,ny+1))
+        uw = 15*np.ones((nx,ny))
+        vw = 15*np.ones((nx,ny))
         
- 
-def rand_initialize():
+        uw[:,5:]= -15
+        vw[5:,:]= -15
+    
+    elif n == 3:
+        
+        "CREATES CASUAL GRID (unitary step) WITH CASUAL IC"
+    
+        np.random.seed(30)
+        nx = int(10* np.random.rand(1))+2
+        ny = int(10* np.random.rand(1))+2
+        nz = 2
+        u=np.zeros(((nz, nx, ny)))
+        v=np.zeros(((nz, nx, ny)))
+        H=np.zeros(((nx+1, ny+1)))
+    
+        dx=100
+        dy=100
+        dz=100
+        
+        uw = 15*(np.random.rand(nx,ny))
+        vw = 15*(np.random.rand(nx,ny))
+    
+    dt=0.9
+    dx=100
+    dy=100
+    dz=100      
+    
+    return nx,ny,nz,u,v,H,dt,dx,dy,dz,uw,vw
 
-    "CREATES CASUAL GRID (unitary step) WITH CASUAL IC"
-    
-    np.random.seed(30)
-    nx = int(100* np.random.rand(1))+2
-    ny = int(100* np.random.rand(1))+2
-    nz = 2
-    u=np.random.rand(nz, nx, ny)
-    v=np.random.rand(nz, nx, ny)
-    H=2*np.random.rand(nx+1, ny+1)
-    u[:,0,:] = 0
-    v[:,0,:] = 0
-    u[:,-1,:] = 0
-    v[:,-1,:] = 0
-    u[:,:,0] = 0
-    v[:,:,0] = 0
-    u[:,:,-1] = 0
-    v[:,:,-1] = 0
-    H[0,:] = H[1,:]
-    H[-1,:]= H[-2,:]
-    H[:,0] = H[:,1]
-    H[:,-1] = H[:,-2]
-    dt=1
-    dx=1
-    dy=1
-    dz=1
-    
-    return nx,ny,nz,u,v,H,dt,dx,dy,dz
+        
 
 
-@given(z=st.floats(200,2000))
-def test_H_time_step_mass_conservation_random_initialize(z):
-    iterations = 10
-    step = 0
-    mH = []
+def test_wind_stress():
+    max_dif_u = [] 
+    max_dif_v = []
+    for i in range(0,4):
     
-    nx, ny, nz,u,v,H,dt,dx,dy,dz = rand_initialize()
-    n = nx * ny
-    sum_H0 = 0
-    for i in range (1,nx):
-        for j in range (1,ny):
-            sum_H0 += H[i,j]
+        nx,ny,nz,u,v,H,dt,dx,dy,dz,uw,vw = custom_initialize(i)
+    
+        Fx,Fy = fn.wind_stress(uw, vw)
+    
+        s_uw = np.sign(uw.flatten())
+        s_vw = np.sign(vw.flatten())
+        s_Fx = np.sign(Fx[1,:,:].flatten())
+        s_Fy = np.sign(Fy[1,:,:].flatten())
+    
+        s_udif = abs(s_uw-s_Fx)
+        s_vdif = abs(s_vw-s_Fy)
+    
+        max_dif_ui = max(s_udif)
+        max_dif_vi = max(s_vdif)
+        max_dif_u.append(max_dif_ui)
+        max_dif_v.append(max_dif_vi)
     
     
-    while iterations > step :
-    
-        H  = fn.H_time_step(H, u, v, z, dx, dy, dt)
+    dif_u = max(max_dif_u)
+    dif_v = max(max_dif_v) 
 
-        sum_H1 = 0
+    assert dif_u == 0,""
+    assert dif_v == 0,""
     
-        for i in range (1,nx-1):
-            for j in range (1,ny-1):
-                sum_H1 += H[i,j]
+@given(nx = st.integers(2,3),ny = st.integers(2,3) )
+def test_bottom_stress(nx,ny):
+    u = np.random.rand(2,nx,ny)
+    v = np.random.rand(2,nx,ny)
+    
+    Bx,By = fn.bottom_stress(u, v)
+    
+    s_u = np.sign(u[0,:,:].flatten())
+    s_v = np.sign(v[0,:,:].flatten())
+    s_Bx = np.sign(Bx[0,:,:].flatten())
+    s_By = np.sign(By[0,:,:].flatten())
+    
+    s_udif = abs(s_u+s_Bx)
+    s_vdif = abs(s_v+s_By)
+    
+    max_dif_u = max(s_udif)
+    max_dif_v = max(s_vdif)
     
 
-        mH.append(abs((sum_H0-sum_H1)/n))
     
-        step+=1
 
-    d_eta_max = max(mH) 
-    assert 0.0000000001 > d_eta_max, "mass conservation failed"
-    print("mass conservation verifed")
+    assert max_dif_u == 0,""
+    assert max_dif_v == 0,""
+
+
+    
+@given(fco = st.floats(-0.01,0.01),nu = st.floats(0,0.5),g = st.floats(9.8,9.82) )
+def test_v_time_step(fco,nu,g):
+    
+    "verify courant condition"
+    
+
+    iterations=50
+    steps=0
+    dt = 0.9
+    C = 0.4
+    nx,ny,nz,u,v,H,dt,dx,dy,dz,uw,vw = custom_initialize(3)
+    z = 2*dz
+
+    
+    Fx,Fy = fn.wind_stress(uw, vw)
+    
+    umax = [] 
+    vmax = []
+    
+    while iterations > steps :
+        u,v,H,udiff,vdiff,Hdiff = fn.vel_time_step(u,v,z,H,Fx,Fy,dx,dy,dz ,dt,g,fco,nu)
+        umaxi = np.max(abs(u))
+        vmaxi = np.max(abs(v))
+                
+        umax.append(umaxi)
+        vmax.append(vmaxi)
+        
+        steps += 1
+    
+    uM = np.max(umax)
+    vM = np.max(vmax)
+    
+    uC = C*dx/dt
+    vC = C*dy/dt
+    
+    assert uC > uM
+    assert vC > vM
+    
+
 
   
 
