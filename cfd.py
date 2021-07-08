@@ -2,7 +2,6 @@ import numpy
 import functions as fn
 import input_testing_functions as test
 from configparser import ConfigParser
-from matplotlib import pyplot, cm
 
 #read const.txt
 
@@ -23,49 +22,23 @@ nu = parser.getfloat('physical_variables', 'nu',
 #read IC
 
 
-datafile_u_top="initial_conditions/u_top.txt"
-datafile_u_bot="initial_conditions/u_bot.txt"
-datafile_v_top="initial_conditions/v_top.txt"
-datafile_v_bot="initial_conditions/v_bot.txt"
+
 datafile_u_wind="initial_conditions/u_wind.txt"
 datafile_v_wind="initial_conditions/v_wind.txt"
-datafile_eta= "initial_conditions/eta.txt"
 
-data_u_top = numpy.loadtxt(datafile_u_top).T
-data_v_top = numpy.loadtxt(datafile_v_top).T
-data_u_bot = numpy.loadtxt(datafile_u_bot).T
-data_v_bot = numpy.loadtxt(datafile_v_bot).T
-H =  numpy.loadtxt(datafile_eta).T
+
 uw = numpy.loadtxt(datafile_u_wind).T
 vw = numpy.loadtxt(datafile_v_wind).T
 
-nx_u_top =len(data_u_top[0])
-ny_u_top =len(data_u_top[:,0])
+nx_u_wind =len(uw[0])
+ny_u_wind =len(uw[:,0])
 
-nx_v_top =len(data_v_top[0])
-ny_v_top =len(data_v_top[:,0])
-
-nx_u_bot =len(data_u_bot[0])
-ny_u_bot =len(data_u_bot[:,0])
-
-nx_v_bot =len(data_v_bot[0])
-ny_v_bot =len(data_v_bot[:,0])
-
-nx_eta = len(H[0])
-ny_eta = len(H[:,0])
+nx_v_wind =len(vw[0])
+ny_v_wind =len(vw[:,0])
 
 u = numpy.zeros(((2,nx,ny)))
-
-u[1,:,:] = data_u_top[:,:]
-u[0,:,:] = data_u_bot[:,:]
-
-
 v = numpy.zeros(((2,nx,ny)))
-
-v[1,:,:] = data_v_top[:,:]
-v[0,:,:] = data_v_bot[:,:]
-
-
+H =  numpy.zeros((nx+1,ny+1))
 
 #create grid
 
@@ -126,20 +99,6 @@ numpy.savetxt('output_data/ubot_out', ubot)
 numpy.savetxt('output_data/vbot_out', vbot)
 numpy.savetxt('output_data/eta_out', H)
 
-xc = numpy.linspace(0, x, nx)
-yc = numpy.linspace(0, y, ny)
-zc = numpy.linspace(0, z, nz)
-X, Y = numpy.meshgrid(xc, yc)
 
-xp = numpy.linspace(0, x, nx+1)
-yp = numpy.linspace(0, y, ny+1)
-zp = numpy.linspace(0, z, nz)
-Xp, Yp = numpy.meshgrid(xp, yp)
-
-utt = uw.transpose()
-vtt = vw.transpose()
-
-
-print(stepcount)
 
 
