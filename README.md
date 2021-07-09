@@ -27,7 +27,7 @@ The project is divided in different files
 ## _WORK FLOW_
 
 
-# first step: provide you input data
+### first step: provide you input data
 To run the code you have to provide three text files, in the folder [initial_conditions](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/initial_conditions):
 
 * [u_wind.txt](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/initial_conditions/u_wind.txt) : n*m matrix with the values of the **zonal wind velocity**[m/s]
@@ -46,15 +46,15 @@ In order to help the user are already provided three test cases:
 
 to simulate one of them just copy the content of one folder and print it in the folder [initial_condition](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/initial_condition)
 
-# second step: verify your input data
+### second step: verify your input data
 
 To verify the correctnes of the provided data the user should compile [input_test.py](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/input_test.py).
 
-# third step: launch the simulation
+### third step: launch the simulation
 
 Then and only then the user will lauch the simulation compiling [cfd.py](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/cfd.py).
 
-# fourth step: print your graphics
+### fourth step: print your graphics
 
 Finally the user can plot the current velocity field, the wind field and the surface elevation resulted from the simulation, he just has to lauch [out_plot.py](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/out_plot.py).
 
