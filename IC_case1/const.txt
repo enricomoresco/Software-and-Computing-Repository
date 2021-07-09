@@ -13,6 +13,5 @@ nu=0.4
 [numerical_variables]
 #number of grid points on x,y axes
 nx = 11
-
 ny = 11
 

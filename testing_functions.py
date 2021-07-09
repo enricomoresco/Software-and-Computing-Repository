@@ -2,8 +2,7 @@ import numpy as np
 import functions as fn
 from hypothesis import strategies as st
 from hypothesis import given
-
-#test functions
+from hypothesis import settings
 
 
 def custom_initialize(n):
@@ -12,104 +11,94 @@ def custom_initialize(n):
     
     if n == 0:
         
-        "max velocity integral on the domain"
+        "max wind velocity integral on the domain"
         
-        nx = int(100* np.random.rand(1))+2
-        ny = int(100* np.random.rand(1))+2    
+        nx = 10
+        ny = 10
         nz = 2
-        u = np.ones(((nz,nx,ny)))
-        v = np.ones(((nz,nx,ny)))
-        H = np.zeros((nx+1,ny+1))
+
+        uw = 15*np.ones((nx,ny))
+        vw = 15*np.ones((nx,ny))
+        
+       
    
     elif n == 1:
         
-        "max velocity divergence a point"
+        "max wind field divergence"
         
-        nx2 = int(50* np.random.rand(1))+1
-        ny2 = int(50* np.random.rand(1))+1    
-        nx = 2*nx2+1
-        ny = 2*ny2+1
+        nx = 10
+        ny = 10
         nz = 2
-        u = np.zeros(((nz,nx,ny)))
-        v = np.zeros(((nz,nx,ny)))
-        u[:,nx2+1,ny2]=-1
-        u[:,nx2-1,ny2]=1
-        v[:,nx2,ny2-1]=1
-        v[:,nx2,ny2+1]=-1
-        H = np.zeros((nx+1,ny+1))
+
+        uw = 15*np.ones((nx,ny))
+        uw[5:,:]= -15
+        vw = 15*np.ones((nx,ny))
+        vw[:,0:]= -15
+        
+        
     
     elif n == 2:
     
-        "spike of mass in the center"
+        "max wind field rotor"
+       
+        nx = 10
+        ny = 10 
+        nz = 2
+
+        uw = 15*np.ones((nx,ny))
+        vw = 15*np.ones((nx,ny))
         
+        uw[:,5:]= -15
+        vw[5:,:]= -15
+    
+    elif n == 3:
+        
+        "CREATES CASUAL GRID (unitary step) WITH CASUAL IC"
+    
         np.random.seed(30)
-        nx2 = int(50* np.random.rand(1))+1
-        ny2 = int(50* np.random.rand(1))+1    
-        nx = 2*nx2+1
-        ny = 2*ny2+1
-        nz = 2        
-        u = np.zeros(((nz,nx,ny)))
-        v = np.zeros(((nz,nx,ny)))
-        H = np.zeros((nx,ny))
-        H[nx2,ny2] = 2
-    u[:,0,:] = 0
-    v[:,0,:] = 0
-    u[:,-1,:] = 0
-    v[:,-1,:] = 0
-    u[:,:,0] = 0
-    v[:,:,0] = 0
-    u[:,:,-1] = 0
-    v[:,:,-1] = 0
-    H[0,:] = H[1,:]
-    H[-1,:]= H[-2,:]
-    H[:,0] = H[:,1]
-    H[:,-1] = H[:,-2]
-    dt=1
-    dx=1
-    dy=1
-    dz=1        
-    return nx,ny,nz,u,v,H,dt,dx,dy,dz
+        nx = int(10* np.random.rand(1))+2
+        ny = int(10* np.random.rand(1))+2
+        nz = 2
+
+    
+        dx=100
+        dy=100
+        dz=100
         
- 
-def rand_initialize():
-
-    "CREATES CASUAL GRID (unitary step) WITH CASUAL IC"
+        uw = 15*(np.random.rand(nx,ny))
+        vw = 15*(np.random.rand(nx,ny))
+   
+    u=np.zeros(((nz, nx, ny)))
+    v=np.zeros(((nz, nx, ny)))
+    H=np.zeros(((nx+1, ny+1)))
+    dt=0.9
+    dx=100
+    dy=100
+    dz=100      
     
-    nx = int(100* np.random.rand(1))+2
-    ny = int(100* np.random.rand(1))+2
-    nz = 2
-    u=np.random.rand(nz, nx, ny)
-    v=np.random.rand(nz, nx, ny)
-    H=2*np.random.rand(nx+1, ny+1)
-    u[:,0,:] = 0
-    v[:,0,:] = 0
-    u[:,-1,:] = 0
-    v[:,-1,:] = 0
-    u[:,:,0] = 0
-    v[:,:,0] = 0
-    u[:,:,-1] = 0
-    v[:,:,-1] = 0
-    H[0,:] = H[1,:]
-    H[-1,:]= H[-2,:]
-    H[:,0] = H[:,1]
-    H[:,-1] = H[:,-2]
-    dt=1
-    dx=1
-    dy=1
-    dz=1
-    
-    return nx,ny,nz,u,v,H,dt,dx,dy,dz
+    return nx,ny,nz,u,v,H,dt,dx,dy,dz,uw,vw
 
 
-@given(z=st.floats(200,2000))   
-def test_H_time_step_mass_conservation_random_initialize(z):
-    iterations = 10
+
+
+
+#test functions
+
+
+
+
+@settings(max_examples=50,deadline =500)
+@given(i=st.integers(0,3))   
+def test_H_time_step(i):
+    iterations = 50
     step = 0
     mH = []
+    nx,ny,nz,u,v,H,dt,dx,dy,dz,uw,vw = custom_initialize(i)
     
     while iterations > step :
     
-        nx, ny, nz,u,v,H,dt,dx,dy,dz = rand_initialize()
+        
+        z = 2* dz
         n = nx * ny
         sum_H0 = 0
 
@@ -134,53 +123,25 @@ def test_H_time_step_mass_conservation_random_initialize(z):
     assert 0.0000000001 > d_eta_max, "mass conservation failed"
     print("mass conservation verifed")
 
-@given(z=st.floats(200,2000))    
-def test_H_timestep_mass_conservation_custom_initialize(z):
 
-    mH = []
+
+@settings(max_examples=50,deadline =500)
+@given(fco = st.floats(-0.01,0.01),nu = st.floats(0,0.5),g = st.floats(9.8,9.82),i = st.integers(0,3))
+def test_udexu(fco,nu,g,i):
+    iterations = 50
+    step = 0
     
-    for i in range (0,2):
-    
-        nx, ny, nz,u,v,H,dt,dx,dy,dz = custom_initialize(i)
-        n = nx * ny
-        sum_H0 = 0
-
-        for i in range (1,nx):
-            for j in range (1,ny):
-                sum_H0 += H[i,j]
-
-        H = fn.H_time_step(H,u,v,z,dx,dy,dt) 
-            
-        sum_H1 = 0
-    
-        for i in range (1,nx):
-            for j in range (1,ny):
-                sum_H1 += H[i,j]
-    
-
-        mH.append(abs((sum_H0-sum_H1)/n))
-    
-       
-
-    d_eta_max = max(mH) 
-    assert 0.0000000001 > d_eta_max, "mass conservation failed"
-    print("mass conservation verifed")
-
-#to verify the momentum conservation in the advection terms
-
-
-
-
-def test_udexu_x_momentum_conservation_random_initialize(iterations=10,step=0):
-    "udexu with random IC"
     
     mx = []    
+    nx,ny,nz,u,v,H,dt,dx,dy,dz,uw,vw = custom_initialize(i)
+    Fx,Fy = fn.wind_stress(uw, vw)
+    z = 2*dz
+    u,v,H,udiff,vdiff,Hdiff = fn.vel_time_step(u,v,z,H,Fx,Fy,dx,dy,dz ,dt,g,fco,nu)
     
     while iterations > step :
         
-
-
-        nx, ny, nz,u,v,H,dt,dx,dy,dz = rand_initialize()
+        u,v,H,udiff,vdiff,Hdiff = fn.vel_time_step(u,v,z,H,Fx,Fy,dx,dy,dz ,dt,g,fco,nu)
+        
         n = nx * ny
 
         udxu = fn.udexu(u, dx)
@@ -211,215 +172,26 @@ def test_udexu_x_momentum_conservation_random_initialize(iterations=10,step=0):
     
 
 
-
-
-def test_udexu_x_momentum_conservation_custom_initialize():
-    "udexu with custom IC"
-    
-    mx = []    
-    
-    for i in range (0,2):
-        
-
-
-        nx, ny, nz,u,v,H,dt,dx,dy,dz = custom_initialize(i)
-        n = nx * ny
-
-        udxu = fn.udexu(u, dx)
-        sum_adv_u=0
-        
-        for i in range (1,nx-1):
-            for j in range (1,ny-1):
-                for k in range (0,2):
-                    
-                    sum_adv_u+=udxu[k,i,j]
-
-
-
-        mx.append(sum_adv_u/n)
-
-
-        
-    
-    
-    d_u_max = max(mx)
-
-
-        
-    assert 0.0000000001 > d_u_max, "x-momentum conservation failed"
-
-    
-    print("x-momentum conservation verifed")
-    
-def test_vdeyu_x_momentum_conservation_random_initialize(iterations=10,step=0):
-    "vdeyu with random IC"
-    
-    mx = []    
-    
-    while iterations > step :
-        
-
-
-        nx, ny, nz,u,v,H,dt,dx,dy,dz = rand_initialize()
-        n = nx * ny
-
-        vdyu = fn.vdeyu(u,v, dy)
-        sum_adv_u=0
-        
-        for i in range (1,nx-2):
-            for j in range (1,ny-2):
-                for k in range (0,2):
-                    
-                    sum_adv_u+=vdyu[k,i,j]
-
-
-
-        mx.append(sum_adv_u/n)
-
-
-        step+=1
-    
-    
-    d_u_max = max(mx)
-
-
-        
-    assert 0.0000000001 > d_u_max, "x-momentum conservation failed"
-
-    
-    print("x-momentum conservation verifed")
-    
-
-def test_vdeyu_x_momentum_conservation_custom_initialize():
-    "test vdyu, custom inizialization"    
-    
-    
-    mx = []    
-    
-    for i in range (0,2):
-        
-
-
-        nx, ny, nz,u,v,H,dt,dx,dy,dz = custom_initialize(i)
-        n = nx * ny
-
-        vdyu = fn.vdeyv(v, dy)
-        sum_adv_u=0
-        
-        for i in range (1,nx-1):
-            for j in range (1,ny-1):
-                for k in range (0,2):
-                    
-                    sum_adv_u+=vdyu[k,i,j]
-
-
-
-        mx.append(sum_adv_u/n)
-
-
-        
-    
-    
-    d_u_max = max(mx)
-
-
-        
-    assert 0.0000000001 > d_u_max, "y-momentum conservation failed"
-
-    
-    print("y-momentum conservation verifed")
-    
-
-def test_udexv_y_momentum_conservation_random_initialize(iterations=10,step=0):
-    "udexv with random IC"
-    
-    my = []    
-    
-    while iterations > step :
-        
-
-
-        nx, ny, nz,u,v,H,dt,dx,dy,dz = rand_initialize()
-        n = nx * ny
-
-        udxv = fn.udexu(u, dx)
-        sum_adv_v=0
-        
-        for i in range (1,nx-1):
-            for j in range (1,ny-1):
-                for k in range (0,2):
-                    
-                    sum_adv_v+=udxv[k,i,j]
-
-
-
-        my.append(sum_adv_v/n)
-
-
-        step+=1
-    
-    
-    d_v_max = max(my)
-
-
-        
-    assert 0.0000000001 > d_v_max, "y-momentum conservation failed"
-
-    
-    print("x-momentum conservation verifed")
-    
-
-def test_udexv_y_momentum_conservation_custom_initialize():
-    "test udexv, custom inizialization"    
-    
-    
-    my = []    
-    
-    for i in range (0,2):
-        
-
-
-        nx, ny, nz,u,v,H,dt,dx,dy,dz = custom_initialize(i)
-        n = nx * ny
-
-        udxv = fn.udexu(u,dx)
-        sum_adv_v=0
-        
-        for i in range (1,nx-1):
-            for j in range (1,ny-1):
-                for k in range (0,2):
-                    
-                    sum_adv_v+=udxv[k,i,j]
-
-
-
-        my.append(sum_adv_v/n)
-
-
-        
-    
-    
-    d_v_max = max(my)
-
-
-        
-    assert 0.0000000001 > d_v_max, "x-momentum conservation failed"
-
-    
-    print("y-momentum conservation verifed")
-
-
-def test_vdeyv_y_momentum_conservation_random_initialize(iterations=10,step=0):
+@settings(max_examples=50,deadline =500) 
+@given(fco = st.floats(-0.01,0.01),nu = st.floats(0,0.5),g = st.floats(9.8,9.82),i = st.integers(0,3))
+def test_vdeyv(fco,nu,g,i):
     "vdeyv with random IC"
     
+    iterations = 50
+    step = 0
+    
     my = []
+    
+    nx,ny,nz,u,v,H,dt,dx,dy,dz,uw,vw = custom_initialize(i)
+    Fx,Fy = fn.wind_stress(uw, vw)
+    z = 2*dz
+    u,v,H,udiff,vdiff,Hdiff = fn.vel_time_step(u,v,z,H,Fx,Fy,dx,dy,dz ,dt,g,fco,nu)
     
     
     while iterations > step :
         
+        u,v,H,udiff,vdiff,Hdiff = fn.vel_time_step(u,v,z,H,Fx,Fy,dx,dy,dz ,dt,g,fco,nu)
 
-
-        nx, ny, nz,u,v,H,dt,dx,dy,dz = rand_initialize()
         n = nx * ny
 
         vdyv = fn.vdeyv(v, dy)
@@ -441,265 +213,172 @@ def test_vdeyv_y_momentum_conservation_random_initialize(iterations=10,step=0):
     print("y-momentum conservation verifed")
     
     
-
-def test_vdeyv_y_momentum_conservation_custom():
-    "vdeyv with custom IC"
-    my = []
-    
-    
-    for i in range (0,2):
-        
-        nx, ny, nz,u,v,H,dt,dx,dy,dz = custom_initialize(i)
-        n = nx * ny
-        vdyv = fn.vdeyv(v, dy)
-        sum_adv_v=0
-        
-        for i in range (1,nx-1):
-            for j in range (1,ny-1):
-                for k in range (0,2):
-                    
-                    sum_adv_v+=vdyv[k,i,j]
-
-        my.append(sum_adv_v/n)
-        
-    
-    d_v_max = max(my)
-    assert 0.0000000001 > d_v_max, "y-momentum conservation failed"
-    
-    print("y-momentum conservation verifed")
 
 
 "test of the evolution of the boundary conditions for the function vel_time_step"
 
-
-@given(z=st.floats(200,2000),fco=st.floats(-0.0001,0.0001),nu =st.floats(0.0001,0.01),g=st.floats(9.80,9.82)) 
-def test_vel_time_step_u_BC_evolution_random(z,fco,nu,g):
+@settings(max_examples=50,deadline =500)
+@given(fco=st.floats(-0.0001,0.0001),nu =st.floats(0.0001,0.01),g=st.floats(9.80,9.82),i= st.integers(0,3)) 
+def test_vel_time_step_BC(fco,nu,g,i):
     "test u BC, random initialization"
     
-    iterations=10
+    iterations=50
     step=0
+    
+    
+    nx,ny,nz,u,v,H,dt,dx,dy,dz,uw,vw = custom_initialize(i)
+    Fx,Fy = fn.wind_stress(uw, vw)
+    z = 2*dz
     while iterations > step :
-    
-        nx, ny, nz,u,v,H,dt,dx,dy,dz = rand_initialize()
-    
-        Fx = np.zeros(((nz,nx,ny)))
-        Fy = np.zeros(((nz,nx,ny)))
+
         
         u,v,H,udiff,vdiff,Hdiff = fn.vel_time_step(u,v,z,H,Fx,Fy,dx,dy,dz ,dt,g,fco,nu)
        
-        u_abs_x_0 = abs(u[:,0,:])
-        u_abs_x_n = abs(u[:,-1,:])
-        u_abs_y_0 = abs(u[:,:,0])
-        u_abs_y_n = abs(u[:,:,-1])
-        
-        uabs_x_0 = u_abs_x_0.flatten()
-        uabs_x_n = u_abs_x_n.flatten()
-        uabs_y_0 = u_abs_y_0.flatten()
-        uabs_y_n = u_abs_y_n.flatten()
-               
-        umax_x_0 = max(uabs_x_0)
-        umax_x_n = max(uabs_x_n)
-        umax_y_0 = max(uabs_y_0)
-        umax_y_n = max(uabs_y_n)
+
+        umax_x_0 = np.max(abs(u[:,0,:]))
+        umax_x_n = np.max(abs(u[:,-1,:]))
+        umax_y_0 = np.max(abs(u[:,:,0]))
+        umax_y_n = np.max(abs(u[:,:,-1]))
+        vmax_x_0 = np.max(abs(v[:,0,:]))
+        vmax_x_n = np.max(abs(v[:,-1,:]))
+        vmax_y_0 = np.max(abs(v[:,:,0]))
+        vmax_y_n = np.max(abs(v[:,:,-1]))
         
         assert umax_x_0 == 0, "u BC evolution failed"
         assert umax_x_n == 0, "u BC evolution failed"
         assert umax_y_0 == 0, "u BC evolution failed"
         assert umax_y_n == 0, "u BC evolution failed"
-        
+        assert vmax_x_0 == 0, "u BC evolution failed"
+        assert vmax_x_n == 0, "u BC evolution failed"
+        assert vmax_y_0 == 0, "u BC evolution failed"
+        assert vmax_y_n == 0, "u BC evolution failed"
         step += 1
     
-    print("u BC evolution verified")
+    print("BC evolution verified")
         
-
-
-@given(z=st.floats(200,2000),fco=st.floats(-0.0001,0.0001),nu =st.floats(0.0001,0.01),g=st.floats(9.80,9.82)) 
-def test_vel_time_step_u_BC_evolution_custom_initialize(z,fco,nu,g):
-    "test u BC, custom initialization"
+@settings(max_examples=50,deadline =500)
+@given(i= st.integers(0,3))
+def test_wind_stress(i):
     
-    for i in range (0,2):
+    "test wind stress parallel direction respect to the wind velocity field"
+     
+    max_dif_u = [] 
+    max_dif_v = []
     
-        nx, ny, nz,u,v,H,dt,dx,dy,dz = custom_initialize(i)
     
-        Fx = np.zeros(((nz,nx,ny)))
-        Fy = np.zeros(((nz,nx,ny)))
-        
-        u,v,H,udiff,vdiff,Hdiff = fn.vel_time_step(u,v,z,H,Fx,Fy,dx,dy,dz ,dt,g,fco,nu)
-       
-        u_abs_x_0 = abs(u[:,0,:])
-        u_abs_x_n = abs(u[:,-1,:])
-        u_abs_y_0 = abs(u[:,:,0])
-        u_abs_y_n = abs(u[:,:,-1])
-        
-        uabs_x_0 = u_abs_x_0.flatten()
-        uabs_x_n = u_abs_x_n.flatten()
-        uabs_y_0 = u_abs_y_0.flatten()
-        uabs_y_n = u_abs_y_n.flatten()
-               
-        umax_x_0 = max(uabs_x_0)
-        umax_x_n = max(uabs_x_n)
-        umax_y_0 = max(uabs_y_0)
-        umax_y_n = max(uabs_y_n)
-        
-        assert umax_x_0 == 0, "u BC evolution failed"
-        assert umax_x_n == 0, "u BC evolution failed"
-        assert umax_y_0 == 0, "u BC evolution failed"
-        assert umax_y_n == 0, "u BC evolution failed"
-        
-        print("u BC evolution verified")
+    nx,ny,nz,u,v,H,dt,dx,dy,dz,uw,vw = custom_initialize(i)
     
+    Fx,Fy = fn.wind_stress(uw, vw)
+    
+    s_uw = np.sign(uw.flatten())
+    s_vw = np.sign(vw.flatten())
+    s_Fx = np.sign(Fx[1,:,:].flatten())
+    s_Fy = np.sign(Fy[1,:,:].flatten())
+    
+    s_udif = abs(s_uw-s_Fx)
+    s_vdif = abs(s_vw-s_Fy)
+    
+    max_dif_ui = max(s_udif)
+    max_dif_vi = max(s_vdif)
+    
+    max_dif_u.append(max_dif_ui)
+    max_dif_v.append(max_dif_vi)
+    
+    dif_u = max(max_dif_u)
+    dif_v = max(max_dif_v) 
 
+    assert dif_u == 0,""
+    assert dif_v == 0,""
 
-@given(z=st.floats(200,2000),fco=st.floats(-0.0001,0.0001),nu =st.floats(0.0001,0.01),g=st.floats(9.80,9.82)) 
-def test_vel_time_step_v_BC_evolution_random_initialize(z,fco,nu,g):
-    "test v BC, random initialization"
-    iterations=10
+@settings(max_examples=50,deadline =500)
+@given(fco=st.floats(-0.0001,0.0001),nu =st.floats(0.0001,0.01),g=st.floats(9.80,9.82),i= st.integers(0,3)) 
+def test_bottom_stress(fco,nu,g,i):
+    
+    "test bottom stress opposite direction respect to the current velocity field"
+    
+    
+    iterations=50
     step=0
+    
+    
+    nx,ny,nz,u,v,H,dt,dx,dy,dz,uw,vw = custom_initialize(i)
+    Fx,Fy = fn.wind_stress(uw, vw)
+    z = 2*dz
+    max_dif_u = [] 
+    max_dif_v = []
     while iterations > step :
     
-        nx, ny, nz,u,v,H,dt,dx,dy,dz = rand_initialize()
+        nx,ny,nz,u,v,H,dt,dx,dy,dz,uw,vw = custom_initialize(i)
     
-        Fx = np.zeros(((nz,nx,ny)))
-        Fy = np.zeros(((nz,nx,ny)))
+        Bx,By = fn.bottom_stress(u, v)
+    
+        s_u = np.sign(u[0,:,:].flatten())
+        s_v = np.sign(v[0,:,:].flatten())
+        s_Bx = np.sign(Bx[0,:,:].flatten())
+        s_By = np.sign(By[0,:,:].flatten())
+    
+        s_udif = abs(s_u+s_Bx)
+        s_vdif = abs(s_v+s_By)
+    
+        max_dif_ui = max(s_udif)
+        max_dif_vi = max(s_vdif)
+        
+        max_dif_u.append(max_dif_ui)
+        max_dif_v.append(max_dif_vi)
         
         u,v,H,udiff,vdiff,Hdiff = fn.vel_time_step(u,v,z,H,Fx,Fy,dx,dy,dz ,dt,g,fco,nu)
-       
-        v_abs_x_0 = abs(v[:,0,:])
-        v_abs_x_n = abs(v[:,-1,:])
-        v_abs_y_0 = abs(v[:,:,0])
-        v_abs_y_n = abs(v[:,:,-1])
-        
-        vabs_x_0 = v_abs_x_0.flatten()
-        vabs_x_n = v_abs_x_n.flatten()
-        vabs_y_0 = v_abs_y_0.flatten()
-        vabs_y_n = v_abs_y_n.flatten()
-        
-        
-        vmax_x_0 = max(vabs_x_0)
-        vmax_x_n = max(vabs_x_n)
-        vmax_y_0 = max(vabs_y_0)
-        vmax_y_n = max(vabs_y_n)
-        
-        assert vmax_x_0 == 0, "v BC evolution failed"
-        assert vmax_x_n == 0, "v BC evolution failed"
-        assert vmax_y_0 == 0, "v BC evolution failed"
-        assert vmax_y_n == 0, "v BC evolution failed"
-
+    
         step += 1
-        
-@given(z=st.floats(200,2000),fco=st.floats(-0.0001,0.0001),nu =st.floats(0.0001,0.01),g=st.floats(9.80,9.82)) 
-def test_vel_time_step_v_BC_evolution_custom_initialize(z,fco,nu,g):
-    "test v BC. custom inizialization"
-    for i in range (0,2):
     
-        nx, ny, nz,u,v,H,dt,dx,dy,dz = custom_initialize(i)
-    
-        Fx = np.zeros(((nz,nx,ny)))
-        Fy = np.zeros(((nz,nx,ny)))
+    dif_u = max(max_dif_u)
+    dif_v = max(max_dif_v) 
+
+    assert dif_u == 0,""
+    assert dif_v == 0,""
         
+        
+        
+@settings(max_examples=50,deadline =500)
+@given(fco = st.floats(-0.01,0.01),nu = st.floats(0,0.5),g = st.floats(9.8,9.82),i = st.integers(0,3))
+def test_v_time_step_courant(fco,nu,g,i):
+    
+    "verify courant condition"
+    
+
+    iterations=50
+    steps=0
+    dt = 0.9
+    C = 0.4
+    nx,ny,nz,u,v,H,dt,dx,dy,dz,uw,vw = custom_initialize(i)
+    z = 2*dz
+
+    
+    Fx,Fy = fn.wind_stress(uw, vw)
+    
+    umax = [] 
+    vmax = []
+    
+    while iterations > steps :
         u,v,H,udiff,vdiff,Hdiff = fn.vel_time_step(u,v,z,H,Fx,Fy,dx,dy,dz ,dt,g,fco,nu)
-       
-        v_abs_x_0 = abs(v[:,0,:])
-        v_abs_x_n = abs(v[:,-1,:])
-        v_abs_y_0 = abs(v[:,:,0])
-        v_abs_y_n = abs(v[:,:,-1])
+        umaxi = np.max(abs(u))
+        vmaxi = np.max(abs(v))
+                
+        umax.append(umaxi)
+        vmax.append(vmaxi)
         
-        vabs_x_0 = v_abs_x_0.flatten()
-        vabs_x_n = v_abs_x_n.flatten()
-        vabs_y_0 = v_abs_y_0.flatten()
-        vabs_y_n = v_abs_y_n.flatten()
-        
-        
-        vmax_x_0 = max(vabs_x_0)
-        vmax_x_n = max(vabs_x_n)
-        vmax_y_0 = max(vabs_y_0)
-        vmax_y_n = max(vabs_y_n)
-        
-        assert vmax_x_0 == 0, "v BC evolution failed"
-        assert vmax_x_n == 0, "v BC evolution failed"
-        assert vmax_y_0 == 0, "v BC evolution failed"
-        assert vmax_y_n == 0, "v BC evolution failed"
-
-        
+        steps += 1
     
-    print("v BC evolution verified")
+    uM = np.max(umax)
+    vM = np.max(vmax)
     
-
+    uC = C*dx/dt
+    vC = C*dy/dt
     
-@given(z=st.floats(200,2000),fco=st.floats(-0.0001,0.0001),nu =st.floats(0.0001,0.01),g=st.floats(9.80,9.82)) 
-def test_vel_time_step_H_BC_evolution_random_initialize(z,fco,nu,g):
-    "test H BC, random initialization"
-    
-    
-    iterations=10
-    step=0
-    while iterations > step :
-    
-        nx, ny, nz,u,v,H,dt,dx,dy,dz = rand_initialize()
-    
-        Fx = np.zeros(((nz,nx,ny)))
-        Fy = np.zeros(((nz,nx,ny)))
-        
-        u,v,H,udiff,vdiff,Hdiff = fn.vel_time_step(u,v,z,H,Fx,Fy,dx,dy,dz,dt,g,fco,nu)
-       
-        Hdiff_x_0 = abs(H[0,1:-1] - H[1,1:-1])
-        Hdiff_x_n = abs(H[-1,1:-1]- H[-2,1:-1])
-        Hdiff_y_0 = abs(H[1:-1,0] - H[1:-1,1])
-        Hdiff_y_n = abs(H[1:-1,-1] - H[1:-1,-2])
-        
-        
-        Hdmax_x_0 = max(Hdiff_x_0)
-        Hdmax_x_n = max(Hdiff_x_n)
-        Hdmax_y_0 = max(Hdiff_y_0)
-        Hdmax_y_n = max(Hdiff_y_n)
-        
-        assert Hdmax_x_0 == 0, "H BC evolution failed"
-        assert Hdmax_x_n == 0, "H BC evolution failed"
-        assert Hdmax_y_0 == 0, "H BC evolution failed"
-        assert Hdmax_y_n == 0, "H BC evolution failed"
-
-        step += 1
-    
-    print("H BC evolution verified")
-    
-@given(z=st.floats(200,2000),fco=st.floats(-0.0001,0.0001),nu =st.floats(0.0001,0.01),g=st.floats(9.80,9.82)) 
-def test_vel_time_step_H_BC_evolution_custom_initialize(z,fco,nu,g):
-    "test H BC, custom initialization"
-    
-    for i in range (0,2):
-    
-    
-        nx, ny, nz,u,v,H,dt,dx,dy,dz = custom_initialize(i)
-    
-        Fx = np.zeros(((nz,nx,ny)))
-        Fy = np.zeros(((nz,nx,ny)))
-        
-        u,v,H,udiff,vdiff,Hdiff = fn.vel_time_step(u,v,z,H,Fx,Fy,dx,dy,dz,dt,g,fco,nu)
-       
-        Hdiff_x_0 = abs(H[0,1:-1] - H[1,1:-1])
-        Hdiff_x_n = abs(H[-1,1:-1]- H[-2,1:-1])
-        Hdiff_y_0 = abs(H[1:-1,0] - H[1:-1,1])
-        Hdiff_y_n = abs(H[1:-1,-1] - H[1:-1,-2])
-        
-        
-        Hdmax_x_0 = max(Hdiff_x_0)
-        Hdmax_x_n = max(Hdiff_x_n)
-        Hdmax_y_0 = max(Hdiff_y_0)
-        Hdmax_y_n = max(Hdiff_y_n)
-        
-        assert Hdmax_x_0 == 0, "H BC evolution failed"
-        assert Hdmax_x_n == 0, "H BC evolution failed"
-        assert Hdmax_y_0 == 0, "H BC evolution failed"
-        assert Hdmax_y_n == 0, "H BC evolution failed"
-
-        
-    
-    print("H BC evolution verified")
-    
+    assert uC > uM
+    assert vC > vM
 
 
 
-    
 
 
 

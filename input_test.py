@@ -1,6 +1,55 @@
 import numpy
 from configparser import ConfigParser
-import input_testing_function as test
+
+#tests to do list
+
+def test_grid(nx,ny,nx_uw,nx_vw,ny_uw,ny_vw):
+    v_nx_uw = nx-nx_uw
+    v_nx_vw = nx-nx_vw
+    v_ny_uw = ny-ny_uw
+    v_ny_vw = ny-ny_vw
+
+    assert nx > 2
+    
+    assert ny > 2
+    
+    assert v_nx_uw == 0, "x dimension of u_top doesn't match with the declared grid"
+    
+    assert v_nx_vw == 0, "x dimension of v_top doesn't match with the declared grid" 
+    
+    assert v_ny_uw == 0, "y dimension of u_top doesn't match with the declared grid"
+    
+    assert v_ny_vw == 0, "y dimension of v_top doesn't match with the declared grid" 
+     
+
+
+def test_input_values(nx,ny,uw,vw):
+    
+    for i in range (0,nx):
+        for j in range (0,ny):
+                
+            a_uw = abs(uw[i,j])
+            a_vw = abs(vw[i,j])
+                
+            assert a_uw < 30, "please provide zonal wind values below 30 m/s"
+            assert a_vw < 30, "please provide meridional wind values below 30 m/s"
+                
+            
+def test_ph_parameters(x,y,z,fco,g,nu):
+    afco = abs(fco)
+    assert x > 0, "please provide positive dimensional values for the basin"
+    assert y > 0, "please provide positive dimensional values for the basin"
+    assert z > 0, "please provide positive dimensional values for the basin"
+    assert 0.2 > afco, "please provide a physically plausible value for coriolis parameter (around ±0.0001 values)"
+    assert g > 0, "gravitational acceleration [g] must be positive! (positive values are associated to downward vectors)"
+    assert nu > 0, "viscosity [nu] must be positive!"
+
+def input_test(nx,ny,uw,vw,nx_uw,nx_vw,ny_uw,ny_vw,x,y,z,fco,g,nu)  :
+    
+    test_input_values(nx,ny,uw,vw)
+    test_grid(nx,ny,nx_uw,nx_vw,ny_uw,ny_vw)
+    test_ph_parameters(x,y,z,fco,g,nu)
+    print("input values verified")  
 
 #read const.txt
 
@@ -28,50 +77,23 @@ nu = parser.getfloat('physical_variables', 'nu',
 #read IC
 
 
-datafile_u_top="initial_conditions/u_top.txt"
-datafile_u_bot="initial_conditions/u_bot.txt"
-datafile_v_top="initial_conditions/v_top.txt"
-datafile_v_bot="initial_conditions/v_bot.txt"
+
 datafile_u_wind="initial_conditions/u_wind.txt"
 datafile_v_wind="initial_conditions/v_wind.txt"
-datafile_eta= "initial_conditions/eta.txt"
 
-data_u_top = numpy.loadtxt(datafile_u_top).T
-data_v_top = numpy.loadtxt(datafile_v_top).T
-data_u_bot = numpy.loadtxt(datafile_u_bot).T
-data_v_bot = numpy.loadtxt(datafile_v_bot).T
-H = numpy.loadtxt(datafile_eta).T
+
+
+
 uw = numpy.loadtxt(datafile_u_wind).T
 vw = numpy.loadtxt(datafile_v_wind).T
 
-nx_u_top =len(data_u_top[0])
-ny_u_top =len(data_u_top[:,0])
+ny_uw =len(uw[0])
+nx_uw =len(uw[:,0])
 
-nx_v_top =len(data_v_top[0])
-ny_v_top =len(data_v_top[:,0])
-
-nx_u_bot =len(data_u_bot[0])
-ny_u_bot =len(data_u_bot[:,0])
-
-nx_v_bot =len(data_v_bot[0])
-ny_v_bot =len(data_v_bot[:,0])
-
-nx_eta = len(H[0])
-ny_eta = len(H[:,0])
-
-u = numpy.zeros(((2,nx,ny)))
-
-u[1,:,:] = data_u_top[:,:]
-u[0,:,:] = data_u_bot[:,:]
-
-v = numpy.zeros(((2,nx,ny)))
-
-v[1,:,:] = data_v_top[:,:]
-v[0,:,:] = data_v_bot[:,:]
+ny_vw =len(vw[0])
+nx_vw =len(vw[:,0])
 
 #create grid
-
-
 
 dx = x / (nx - 1)
 dy = y / (ny - 1)
@@ -86,4 +108,15 @@ yp = numpy.linspace(0, y, ny+1)
 zp = numpy.linspace(0, z, nz)
 Xp, Yp = numpy.meshgrid(xp, yp)
 
-test.input(nx,ny,H,nx_u_top,nx_v_top,nx_u_bot,nx_v_bot,nx_eta,ny_u_top,ny_v_top,ny_u_bot,ny_v_bot,ny_eta,uw,vw,u,v,x,y,z,fco,g,nu)
+#apply the tests
+
+test_input_values(nx,ny,uw,vw)
+print("input values verified")
+test_grid(nx,ny,nx_uw,nx_vw,ny_uw,ny_vw)
+print("grid dimensions verified")
+test_ph_parameters(x,y,z,fco,g,nu)
+print("physical parameters verified")
+
+print("######################")
+print("#  ALL TESTS PASSED  #")
+print("######################")

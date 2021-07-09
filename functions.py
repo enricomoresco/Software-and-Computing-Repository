@@ -39,6 +39,7 @@ def wind_stress(uw, vw):
     Fy[1,:,:]= k*vw[:,:]*numpy.sqrt((uw[:,:]**2)+(vw[:,:]**2))
     return Fx, Fy
 
+
 #x-derivative of 2-variables function
 
 def Dexb(f, dx):

@@ -76,7 +76,7 @@ stepcount = 0
 while  udiff > a or vdiff > b or Hdiff > c :
 
     u, v, H, udiff, vdiff, Hdiff  = fn.vel_time_step(u,v,z,H,Fx,Fy,dx,dy,dz ,dt ,g,fco,nu)
-    test.test_eta_H(z,H, nx, ny)
+    
     stepcount +=1
 
 utop= numpy.zeros((nx,ny))
@@ -99,6 +99,7 @@ numpy.savetxt('output_data/ubot_out', ubot)
 numpy.savetxt('output_data/vbot_out', vbot)
 numpy.savetxt('output_data/eta_out', H)
 
+print("simulation completed")
 
 
 
