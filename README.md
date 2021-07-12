@@ -11,7 +11,7 @@ Furthermore are requested the following libraries:
 
 The project is divided in different files
 
-* [initial_condition](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/initial_condition) is designed to contain all the input files
+* [initial_conditions](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/initial_conditions) is designed to contain all the input files
 * [IC_case1](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/IC_case1) costitute an example case with uniform wind
 * [IC_case2](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/IC_case2) costitute an example case with convergent wind
 * [IC_case3](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/IC_case3) costitute an example case with uniform wind field rotor
