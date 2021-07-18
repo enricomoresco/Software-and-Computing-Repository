@@ -50,6 +50,17 @@ to simulate one of them just copy the content of one folder and print it in the 
 
 To verify the correctnes of the provided data the user should compile [input_test.py](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/input_test.py).
 
+_python input_test.py_
+
+if the provided input values are properly provided you will get the following message
+
+_input values verified
+grid dimensions verified
+physical parameters verified_
+######################
+#  ALL TESTS PASSED  #
+######################
+
 ### third step: launch the simulation
 
 Then and only then the user will lauch the simulation compiling [cfd.py](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/cfd.py).
