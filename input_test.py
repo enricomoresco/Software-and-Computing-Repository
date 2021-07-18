@@ -1,4 +1,4 @@
-import numpy
+import numpy as np
 from configparser import ConfigParser
 
 #tests to do list
@@ -84,8 +84,8 @@ datafile_v_wind="initial_conditions/v_wind.txt"
 
 
 
-uw = numpy.loadtxt(datafile_u_wind).T
-vw = numpy.loadtxt(datafile_v_wind).T
+uw = np.loadtxt(datafile_u_wind).T
+vw = np.loadtxt(datafile_v_wind).T
 
 ny_uw =len(uw[0])
 nx_uw =len(uw[:,0])
@@ -98,15 +98,15 @@ nx_vw =len(vw[:,0])
 dx = x / (nx - 1)
 dy = y / (ny - 1)
 dz = z / (nz - 1)
-xc = numpy.linspace(0, x, nx)
-yc = numpy.linspace(0, y, ny)
-zc = numpy.linspace(0, z, nz)
-X, Y = numpy.meshgrid(xc, yc)
+xc = np.linspace(0, x, nx)
+yc = np.linspace(0, y, ny)
+zc = np.linspace(0, z, nz)
+X, Y = np.meshgrid(xc, yc)
 
-xp = numpy.linspace(0, x, nx+1)
-yp = numpy.linspace(0, y, ny+1)
-zp = numpy.linspace(0, z, nz)
-Xp, Yp = numpy.meshgrid(xp, yp)
+xp = np.linspace(0, x, nx+1)
+yp = np.linspace(0, y, ny+1)
+zp = np.linspace(0, z, nz)
+Xp, Yp = np.meshgrid(xp, yp)
 
 #apply the tests
 

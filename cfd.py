@@ -1,6 +1,5 @@
 import numpy
 import functions as fn
-import input_testing_functions as test
 from configparser import ConfigParser
 
 #read const.txt
