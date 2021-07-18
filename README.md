@@ -52,22 +52,26 @@ To verify the correctnes of the provided data the user should compile [input_tes
 
 _python input_test.py_
 
-if the provided input values are properly provided you will get the following message
-
-_input values verified
-grid dimensions verified
-physical parameters verified_
-######################
-#  ALL TESTS PASSED  #
-######################
 
 ### third step: launch the simulation
 
 Then and only then the user will lauch the simulation compiling [cfd.py](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/cfd.py).
 
+_python cfd.py_
+
 ### fourth step: print your graphics
 
 Finally the user can plot the current velocity field, the wind field and the surface elevation resulted from the simulation, he just has to lauch [out_plot.py](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/out_plot.py).
+
+_python out_plot.py_
+
+### fifth step: enjoy!
+
+enjoy the program, make your own experiments and let me know if you need some more information than the previously given
+
+Enrico Moresco
+
+mailbox: enrico.moresco@studio.unibo.it
 
 
 
