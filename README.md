@@ -46,6 +46,7 @@ In order to help the user are already provided three test cases:
 
 to simulate one of them just copy the content of one folder and print it in the folder [initial_condition](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/initial_condition)
 
+
 ### second step: verify your input data
 
 To verify the correctnes of the provided data the user should compile [input_test.py](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/input_test.py).
@@ -61,7 +62,7 @@ _python cfd.py_
 
 ### fourth step: print your graphics
 
-Finally the user can plot the current velocity field, the wind field and the surface elevation resulted from the simulation, he just has to lauch [out_plot.py](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/out_plot.py).
+Finally the user can plot the current velocity field, the wind field and the surface elevation resulted from the simulation, he just has to lauch [out_plot.py](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/out_plot.py).
 
 _python out_plot.py_
 
