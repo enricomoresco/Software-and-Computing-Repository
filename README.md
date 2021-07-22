@@ -20,8 +20,8 @@ The project is divided in different files
 * [cfd.py](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/cfd.py) is the core of the code and it's the file to be launched
 * [functions](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/functions) contains all the functions previously discussed and other simple tools
 * [input_test](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/input_test) is a tool to verify the correctness of the input files
-* [testing_functions](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/test_functions) contains all the different tests
-* [out_plot](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/out_plot) is designed to plot in [output_figures](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/output_figures) the output elevation and current field resulting, and the input wind field from the simulation
+* [testing_functions](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/testing_functions.py) contains all the different tests
+* [out_plot](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/out_plot.py) is designed to plot in [output_figures](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/output_figures) the output elevation and current field resulting, and the input wind field from the simulation
 * [output_data](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/output_data) contains the output elevation and current field
 
 ## _WORK FLOW_
