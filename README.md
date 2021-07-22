@@ -94,7 +94,7 @@ _python out_plot.py_
 
 ### fifth step: enjoy!
 
-enjoy the program, make your own experiments and let me know if you need some more information than the previously given
+enjoy the program, make your own experiments and let me know if you need some more informatiosn than the previously given
 
 Enrico Moresco
 
