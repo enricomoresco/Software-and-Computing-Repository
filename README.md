@@ -18,10 +18,10 @@ The project is divided in different files
 
 * [output_figures](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/output_figures) contains all the output figures
 * [cfd.py](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/cfd.py) is the core of the code and it's the file to be launched
-* [functions](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/functions.py) contains all the functions previously discussed and other simple tools
-* [input_test](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/input_test.py) is a tool to verify the correctness of the input files
-* [testing_functions](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/testing_functions.py) contains all the different tests
-* [out_plot](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/out_plot.py) is designed to plot in [output_figures](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/output_figures) the output elevation and current field resulting, and the input wind field from the simulation
+* [functions](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/functions) contains all the functions previously discussed and other simple tools
+* [input_test](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/input_test) is a tool to verify the correctness of the input files
+* [testing_functions](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/test_functions) contains all the different tests
+* [out_plot](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/out_plot) is designed to plot in [output_figures](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/output_figures) the output elevation and current field resulting, and the input wind field from the simulation
 * [output_data](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/output_data) contains the output elevation and current field
 
 ## _WORK FLOW_
@@ -37,7 +37,9 @@ To run the code you have to provide three text files, in the folder [initial_con
 The user must provide physically adequate values of variables:
 
 * **Wind velocity** must be below 30[m/s]
-* **The grid** itself must count at least three points per dimension
+* **The grid** itself must count at least three points per dimension 
+
+
 In order to help the user are already provided three test cases:
 
 * [IC_case1](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/IC_case1)
@@ -56,23 +58,9 @@ _python input_test.py_
 
 ### third step: launch the simulation
 
-Then and only then the user will lauch the simulation compiling [cfd.py](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/cfd.py).
+Then and only then the user will lauch the simulation compiling [cfd.py](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/cfd.py).
 
 _python cfd.py_
-
-The program will ask you to insert the name of the IC_folder,
-
-_Enter the name of the IC folder_
-
-you will insert it, for example [IC_case1](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/IC_case1) costitute an example case with uniform wind
-
-_Enter the name of the IC folder IC_case1_
-
-and the simulation will run, when it will be complete will tell you
-
-_simulation completed_
-
-then you'll be ready for the fourth step
 
 ### fourth step: print your graphics
 
