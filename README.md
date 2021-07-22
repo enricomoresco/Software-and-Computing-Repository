@@ -28,7 +28,7 @@ The project is divided in different files
 
 
 ### first step: provide you input data
-To run the code you have to provide three text files, in the folder [initial_conditions](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/initial_conditions):
+To run the code you have to provide three text files, in a folder, for example [initial_conditions](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/initial_conditions):
 
 * [u_wind.txt](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/initial_conditions/u_wind.txt) : n*m matrix with the values of the **zonal wind velocity**[m/s]
 * [v_wind.txt](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/initial_conditions/v_wind.txt) : n*m matrix with the values of the **meridional wind velocity**[m/s]
@@ -46,7 +46,7 @@ In order to help the user are already provided three test cases:
 * [IC_case2](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/IC_case2)
 * [IC_case3](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/IC_case3)
 
-to simulate one of them just copy the content of one folder and print it in the folder [initial_condition](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/initial_condition)
+these allow you to ignore the first step and go directly to the second one
 
 
 ### second step: verify your input data
