@@ -69,7 +69,9 @@ you will insert it, for example [IC_case1](https://github.com/enricomoresco/Soft
 _Enter the name of the IC folder IC_case1_
 
 and the simulation will run, when it will be complete will tell you
+
 _simulation completed_
+
 then you'll be ready for the fourth step
 
 ### fourth step: print your graphics
