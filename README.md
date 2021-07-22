@@ -55,12 +55,36 @@ To verify the correctnes of the provided data the user should compile [input_tes
 
 _python input_test.py_
 
+The program will ask you to insert the name of the IC_folder,
+
+_Enter the name of the IC folder_
+
+you will insert it, for example [IC_case1](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/IC_case1) costitute an example case with uniform wind
+
+_Enter the name of the IC folder IC_case1_
+
+when you'll read "ALL TESTS PASSED" you'll be ready to proceed to the third step
+
 
 ### third step: launch the simulation
 
 Then and only then the user will lauch the simulation compiling [cfd.py](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/main/cfd.py).
 
 _python cfd.py_
+
+The program will ask you to insert the name of the IC_folder,
+
+_Enter the name of the IC folder_
+
+you will insert it, for example [IC_case1](https://github.com/enricomoresco/Software-and-Computing-Repository/blob/master/IC_case1) costitute an example case with uniform wind
+
+_Enter the name of the IC folder IC_case1_
+
+and the simulation will run, when it will be complete will tell you
+
+_simulation completed_
+
+then you'll be ready for the fourth step
 
 ### fourth step: print your graphics
 
