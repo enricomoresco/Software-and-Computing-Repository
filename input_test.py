@@ -54,7 +54,8 @@ def input_test(nx,ny,uw,vw,nx_uw,nx_vw,ny_uw,ny_vw,x,y,z,fco,g,nu)  :
 #read const.txt
 
 parser = ConfigParser()
-parser.read('initial_conditions/const.txt')
+input_folder = input('Enter the name of the IC folder ')
+parser.read(input_folder+'/const.txt')
 nx = parser.getint('numerical_variables', 'nx',
                          fallback = -1) 
 ny = parser.getint('numerical_variables', 'ny',
@@ -77,9 +78,8 @@ nu = parser.getfloat('physical_variables', 'nu',
 #read IC
 
 
-
-datafile_u_wind="initial_conditions/u_wind.txt"
-datafile_v_wind="initial_conditions/v_wind.txt"
+datafile_u_wind=input_folder+"/u_wind.txt"
+datafile_v_wind=input_folder+"/v_wind.txt"
 
 
 

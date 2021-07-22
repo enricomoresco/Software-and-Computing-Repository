@@ -40,9 +40,14 @@ def wind_stress(uw, vw):
     return Fx, Fy
 
 
-#x-derivative of 2-variables function
+
 
 def Dexb(f, dx):
+    """x-derivative of 2-variables function
+    
+    input: f(primitive 2-dimensional function), dx(grid step)
+    output: f_1 (x-derivate 2-dimensional function)"""
+    
     nx = len(f[:,0])
     ny = len(f[0,:])
     
@@ -53,6 +58,11 @@ def Dexb(f, dx):
 #y-derivative of 2-variables function
 
 def Deyb(f, dy):
+    """y-derivative of 2-variables function
+    
+    input: f(primitive 2-dimensional function), dy(grid step)
+    output: f_1 (y-derivate 2-dimensional function)"""
+    
     nx = len(f[:,0])
     ny = len(f[0,:])
     f_1 =  numpy.zeros((nx,ny))
@@ -62,6 +72,11 @@ def Deyb(f, dy):
 #x-derivative of 3-variables function
 
 def Dex(f, dx):
+    """x-derivative of 3-variables function
+    
+    input: f(primitive 3-dimensional function), dx(grid step)
+    output: f_1 (x-derivate 3-dimensional function)"""
+    
     nx = len(f[0,:,0])
     ny = len(f[0,0,:])
     nz = 2    
@@ -72,6 +87,11 @@ def Dex(f, dx):
 #y-derivative of 3-variables function
 
 def Dey(f, dy):
+    """y-derivative of 3-variables function
+    
+    input: f(primitive 3-dimensional function), dy(grid step)
+    output: f_1 (y-derivate 3-dimensional function)""" 
+   
     nx = len(f[0,:,0])
     ny = len(f[0,0,:])
     nz = 2  
@@ -81,6 +101,11 @@ def Dey(f, dy):
 
 #second x-derivative of 3-variables function
 def Dex2(f, dx):
+    """second-x-derivative of 3-variables function
+    
+    input: f(primitive 3-dimensional function), dx(grid step)
+    output: f_2 (x-second-derivate 3-dimensional function)"""
+    
     nx = len(f[0,:,0])
     ny = len(f[0,0,:])
     nz = 2  
@@ -91,6 +116,11 @@ def Dex2(f, dx):
 #second y-derivative of 3-variables function
 
 def Dey2(f, dy):
+    """second-y-derivative of 3-variables function
+    
+    input: f(primitive 3-dimensional function), dy(grid step)
+    output: f_2 (y-second-derivate 3-dimensional function)"""
+    
     nx = len(f[0,:,0])
     ny = len(f[0,0,:])
     nz = 2  
@@ -98,8 +128,13 @@ def Dey2(f, dy):
     f_2[:,:,1:-1] = (f[:,:,2:ny]+f[:,:,0:ny-2]-(2*f[:,:,1:-1]))/dy**2
     return f_2
 
-#second x-derivative of 2-variables function
+
 def Dex2b(f,dx):
+    """second-x-derivative of 2-variables function
+    
+    input: f(primitive 3-dimensional function), dx(grid step)
+    output: f_2 (x-second-derivate 2-dimensional function)"""
+    
     nx = len(f[:,0])
     ny = len(f[0,:])
     f_2 = numpy.zeros((nx,ny))
@@ -109,6 +144,11 @@ def Dex2b(f,dx):
 #second y-derivative of 2-variables function
 
 def Dey2b(f, nx, ny, dy):
+    """second-y-derivative of 2-variables function
+    
+    input: f(primitive 2-dimensional function), dy(grid step)
+    output: f_2 (y-second-derivate 2-dimensional function)"""
+    
     nx = len(f[:,0])
     ny = len(f[0,:])
     f_2 = numpy.zeros((nx,ny))
@@ -127,6 +167,11 @@ output : udxu,udxv,vdyu,vdyv (the four advection terms)
 """
 
 def udexu(u,dx):
+    """first advection term
+    
+    input : u(zonal current velocity), dx (grid step)
+    output : udxu (the first advection term)"""
+    
     un = cp.deepcopy(u)  
     Dexun = Dex(un,dx)
     nx = len(u[0,:,0])
@@ -139,6 +184,11 @@ def udexu(u,dx):
 
 
 def udexv(u,v,dx):
+    """second advection term
+    
+    input : u(zonal current velocity), v(meridional velocity), dx (grid step)
+    output : udxv (the second advection term)"""
+    
     un = cp.deepcopy(u)
     vn = cp.deepcopy(v)
     Dexvn = Dex(vn,dx)
@@ -150,6 +200,11 @@ def udexv(u,v,dx):
     return udxv
 
 def vdeyu(u,v,dy):
+    """third advection term
+    
+    input : u(zonal current velocity), v(meridional velocity), dy (grid step)
+    output : vdyu (the third advection term)"""
+    
     un = cp.deepcopy(u)
     vn = cp.deepcopy(v)
     Deyun = Dey(un,dy)  
@@ -161,6 +216,11 @@ def vdeyu(u,v,dy):
     return vdyu
 
 def vdeyv(v,dy):
+    """fourth advection term
+    
+    input : v(meridional velocity), dy (grid step)
+    output : vdyv (the fourth advection term)"""
+    
     nx = len(v[0,:,0])
     ny = len(v[0,0,:])
     nz = 2 

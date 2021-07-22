@@ -5,7 +5,8 @@ from configparser import ConfigParser
 #read const.txt
 
 parser = ConfigParser()
-parser.read('initial_conditions/const.txt')
+input_folder = input('Enter the name of the IC folder ')
+parser.read(input_folder+'/const.txt')
 nx = parser.getint('numerical_variables', 'nx') 
 ny = parser.getint('numerical_variables', 'ny') 
 x = parser.getfloat('physical_variables', 'x') 
